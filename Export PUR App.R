@@ -21,15 +21,15 @@ library(purrr)
 #Louise's wd: C:/Users/x951160/OneDrive - Defra/UK to EU PUR data
 #Katie's wd: C:/Users/X946331/OneDrive - Defra/UK to EU PUR data
 
-wd <- c("C:/Users/X946331/OneDrive - Defra/UK to EU PUR data")
+#wd <- c("C:/Users/X946331/OneDrive - Defra/UK to EU PUR data")
 
 ## Importing PUR calculations
 
-PUR_exportdata <- readRDS(paste0(wd,"/final_exportPUR2023-10-04.RDS"))
+PUR_exportdata <- readRDS("final_exportPUR2023-10-04.RDS")
 
 ## Import PUR pref data
 
-Preftype_data <- readRDS(paste0(wd,"/PUR_type of export preference2023-10-04.RDS"))
+Preftype_data <- readRDS("PUR_type of export preference2023-10-04.RDS")
 
 
 ##################### Creating dataframes that will link to different inputs of the app #############
@@ -1036,7 +1036,8 @@ server <- function(input, output, session){
         theme(axis.title.x = element_blank(),
               axis.text.x = element_text(angle = 90),
               axis.title.y = element_blank())+
-        scale_x_discrete(labels=c("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec")), tooltip = c("text"))
+        scale_x_discrete(labels=c("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec")) +
+          scale_y_continuous(limits = c(0, max(Monthly_graph_data()$agri_PUR) + 10)) , tooltip = c("text"))
       
       
   })
@@ -1045,52 +1046,52 @@ server <- function(input, output, session){
   # This extracts the average agri-food PUR by HS code over 12 months
   ## create reactive text
 
-  filtered_graph_data <- reactive({
-
-    monthly_HS2 <- PUR_exportdata %>%
-      filter(year %in% input$year, HS2 %in% input$HSCode) %>%
-      group_by(month, country_name) %>%
-      summarise(agri_PUR = round(sum(Pref_Trade)/sum(Eligible_Trade)*100,1),
-                Country = if_else(c(country_name %in% input$Country | country_name == "EU"), country_name, "All"),.groups = "drop") %>%
-      distinct() %>%
-      na.omit()
-    
-    
-    Monthly_countrychoice <- PUR_exportdata %>%
-      filter(country_name %in% input$Country,year %in% input$year, HS2 %in% input$HSCode) %>%
-      group_by(month, country_name) %>%
-      summarise(agri_PUR = round(sum(Pref_Trade)/sum(Eligible_Trade)*100,1),.groups = "drop") %>%
-      na.omit()
-  
-
-    Monthly_countryEU <- PUR_exportdata %>%
-      filter(country_name == "EU",year %in% input$year, HS2 %in% input$HSCode) %>%
-      group_by(month, country_name) %>%
-      summarise(agri_PUR = round(sum(Pref_Trade)/sum(Eligible_Trade)*100,1),.groups = "drop") %>%
-      na.omit()
-
-    list(monthly_HS2 = monthly_HS2, Monthly_countrychoice = Monthly_countrychoice, Monthly_countryEU = Monthly_countryEU)
-})
-  
-## graph for monthly PUR by HS code and country
-  
-  output$trends_graph <- renderPlotly({ 
-    if (nrow(monthly_HS2) == 0 || nrow(Monthly_countrychoice) == 0 || nrow(Monthly_countryEU) == 0) {
-      # Handle the case where one or more data frames are empty
-      return(plotly::plot_ly(x = NULL, y = NULL, type = "scatter", mode = "markers", text = "No data available"))
-    } else {
-      # Proceed with generating the plot
-      ggplotly(ggplot(data = monthly_HS2, aes(x = month, y = agri_PUR, group = 1)) +
-                 geom_point(color = "grey") +
-                 geom_line(data = Monthly_countrychoice, aes(x = month, y = agri_PUR, group = 1), color = "blue") +
-                 geom_line(data = Monthly_countryEU, aes(x = month, y = agri_PUR, group = 1), color = "black") +
-                 theme_classic() +
-                 theme(axis.title.x = element_blank(),
-                       axis.text.x = element_text(angle = 90),
-                       axis.title.y = element_blank()) +
-                 scale_x_discrete(labels=c("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec")))
-    }
-})
+#   filtered_graph_data <- reactive({
+# 
+#     monthly_HS2 <- PUR_exportdata %>%
+#       filter(year %in% input$year, HS2 %in% input$HSCode) %>%
+#       group_by(month, country_name) %>%
+#       summarise(agri_PUR = round(sum(Pref_Trade)/sum(Eligible_Trade)*100,1),
+#                 Country = if_else(c(country_name %in% input$Country | country_name == "EU"), country_name, "All"),.groups = "drop") %>%
+#       distinct() %>%
+#       na.omit()
+#     
+#     
+#     Monthly_countrychoice <- PUR_exportdata %>%
+#       filter(country_name %in% input$Country,year %in% input$year, HS2 %in% input$HSCode) %>%
+#       group_by(month, country_name) %>%
+#       summarise(agri_PUR = round(sum(Pref_Trade)/sum(Eligible_Trade)*100,1),.groups = "drop") %>%
+#       na.omit()
+#   
+# 
+#     Monthly_countryEU <- PUR_exportdata %>%
+#       filter(country_name == "EU",year %in% input$year, HS2 %in% input$HSCode) %>%
+#       group_by(month, country_name) %>%
+#       summarise(agri_PUR = round(sum(Pref_Trade)/sum(Eligible_Trade)*100,1),.groups = "drop") %>%
+#       na.omit()
+# 
+#     list(monthly_HS2 = monthly_HS2, Monthly_countrychoice = Monthly_countrychoice, Monthly_countryEU = Monthly_countryEU)
+# })
+#   
+# ## graph for monthly PUR by HS code and country
+#   
+#   output$trends_graph <- renderPlotly({ 
+#     if (nrow(monthly_HS2) == 0 || nrow(Monthly_countrychoice) == 0 || nrow(Monthly_countryEU) == 0) {
+#       # Handle the case where one or more data frames are empty
+#       return(plotly::plot_ly(x = NULL, y = NULL, type = "scatter", mode = "markers", text = "No data available"))
+#     } else {
+#       # Proceed with generating the plot
+#       ggplotly(ggplot(data = monthly_HS2, aes(x = month, y = agri_PUR, group = 1)) +
+#                  geom_point(color = "grey") +
+#                  geom_line(data = Monthly_countrychoice, aes(x = month, y = agri_PUR, group = 1), color = "blue") +
+#                  geom_line(data = Monthly_countryEU, aes(x = month, y = agri_PUR, group = 1), color = "black") +
+#                  theme_classic() +
+#                  theme(axis.title.x = element_blank(),
+#                        axis.text.x = element_text(angle = 90),
+#                        axis.title.y = element_blank()) +
+#                  scale_x_discrete(labels=c("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec")))
+#     }
+# })
 
   
   # Treemap graphs
@@ -1113,7 +1114,7 @@ server <- function(input, output, session){
       filter(country_name %in% mycountry1 & year %in% myyear1) %>%
       #~ the {{}} allows it to group by the variable that you have sent to the function
       group_by(!!myitem1) %>%
-      summarise(Value = sum(Total_ex),.groups = "drop") %>%
+      summarise(Value = sum(statvalue),.groups = "drop") %>%
       #~ by renaming the column to a general name (here I've called it item), you can 
       rename("item" = !!myitem1)
     return(t)
@@ -1162,7 +1163,7 @@ server <- function(input, output, session){
     
     Country_elig <- Country_pref %>%
       group_by(eligibility_name) %>%
-      summarise(Value = sum(Total_ex), .groups = "drop") 
+      summarise(Value = sum(statvalue), .groups = "drop") 
     
     return(Country_elig)
     
