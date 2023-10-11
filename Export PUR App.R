@@ -121,7 +121,7 @@ HS2_code <- HS2_code[!duplicated(HS2_code),]
 
 ## This creates the header for the PUR app
 
-header <- dashboardHeader(title = "Export PUR app")
+header <- dashboardHeader(title = "EU imports from UK PUR app")
 
 sidebar <- dashboardSidebar(
   
@@ -147,19 +147,17 @@ body <- dashboardBody(
   tabItems(
     
     tabItem(tabName = "Overview",
-            h3(strong("Welcome to the Preferential Utilisation Rate (PUR) app")),
+            h3(strong("Welcome to the EU imports from UK Preferential Utilisation Rate (PUR) app")),
             
-            h5("This tool was produced by the Trade Analysis, Project Delivery and Support (TAPS) team                to present the UK Export Preferential Utilisation Rate (PUR) data
-            by country and agrifood HS2 chapters (1-23)."),
+            h5("This tool was produced by the Trade Analysis Project Delivery and Support (TAPS) team to present Preference Utilisation Rate (PUR) data for agrifood HS Chapters 1-23
+            reflecting EU imports from the UK."),
             ## This box creates the overline for the box of the text
             box(title = "User Guide", status='primary', solidHeader=TRUE, width="100%", height="100%",
                 h5(strong("PUR Information:")),
                 
-                h5("Although the EU has agreed to lower its import tariffs for the UK (e.g. through FTAs), these lower tariffs may not always be used."),
+                h5("Although the UK and EU have agreed tariff-free, quota-free access under the TCA, this only applies where the goods meet the relevant Rules of Origin and therefore not all trade between the two parties will qualify for zero tariffs."),
                 
-                h5("There are a few potential reasons for this, for example: businesses may be unaware that a preferential rate exists, the margin between the Most Favoured Nation rate and preferential rate may be small enough to not make it worthwhile doing the paperwork to claim the lower tariff, or the good may not meet the relevant Rules of Origin."),
-                
-                h5("Understanding where preferences are being used (and where they are not), through Preference Utlisation Rate data can inform HMG's efforts to increase trade."), 
+                h5("Understanding where preferences are being used (and where they are not), through Preference Utlisation Rate data can inform HMG's efforts to increase trade and inform the work to revisit the TCA."), 
                 
                 h5("A Preference Utilisation Rate (PUR) reflects the value of goods entering under trade preferences as a share of the total value of goods that were eligible for preference."),
                 
@@ -175,25 +173,22 @@ body <- dashboardBody(
                 
                 br(),
                 
-                h5("The data presented in this app covers UK exports only - meaning that it measures the total value of UK exports that entered under a preferential tariff regime, as a proportion of the total value of UK exports that were eligible for preferential tariffs."),
-                h5("Exports are considered eligible for a preference (i.e. the denominator) if there is one or more preferential tariffs available for that good from the specified partner country in the month of reporting, and that preferential rate is lower than the MFN tariff that would otherwise apply."),
-                h5("Exports are recorded as using their preference (i.e. the numerator) if they were exported under a preferential regime."),
-                h5("Exports are excluded from the eligibility total if they entered under conditions where a preferential tariff wouldn't reasonably be used - this includes: "),
-                h5("- Exports entering under special processing procedures that would permit goods to enter duty-free or under a reduced rate (i.e. inward or outward processing)."), 
-                h5("- Exports where a preference is eligible but entered duty-free under MFN terms due to a measure such as suspensions or non-preferential TRQs."),
-                h5("- Exports where the regime under which the good entered the UK is unknown (e.g. due to insufficient information provided on the customs declaration)."),
+                h5("The data presented in this app covers EU imports from the UK (the data is declared by the EU, but reflects the trade flows moving from the UK to the EU) - meaning that it measures the total value of EU imports from UK that entered under a preferential tariff regime, as a proportion of the total value of EU imports from UK that were eligible for preferential tariffs."),
+                h5("Imports are considered eligible for a preference (i.e. the denominator) if there is one or more preferential tariffs available for that good from the specified partner country in the month of reporting, and that preferential rate is lower than the MFN tariff that would otherwise apply."),
+                h5("Imports are recorded as using their preference (i.e. the numerator) if they were exported under a preferential regime."),
+                h5("Imports are excluded from the eligibility total if they entered under conditions where a preferential tariff wouldn't reasonably be used - this includes: "),
+                h5("- Imports entering under special processing procedures that would permit goods to enter duty-free or under a reduced rate (i.e. inward or outward processing)."), 
+                h5("- Imports where a preference is eligible but entered duty-free under MFN terms due to a measure such as suspensions or non-preferential TRQs."),
+                h5("- Imports where the regime under which the good entered the UK is unknown (e.g. due to insufficient information provided on the customs declaration)."),
                 
                 h5(strong("How to use:")),
-                h5(strong("1)"),"Choose to view the PUR rates for all countries or a 
-                   specific country."),
-                h5(strong("2)"), "Select the HS2 chapter(s) of choice. "),
-                h5(strong("3)"), "A overview of the average PUR data for all countries by chapter (HS2) and average of the lowest PUR by CN8 is provided. If one country is selected, a overview of the average PUR data by chapter is provided."),
+                h5(strong("1)"),"Choose to view the PUR rates for the EU as a bloc or individual member states, and the year of interest."),
+                h5(strong("2)"), "An overview of the average PUR data for the chosen country is presented "),
+                h5(strong("3)"), "Select the HS2 Chapter of interest."),
                 h5(strong("4)"), "Select the tab for the aggregation level of interest (HS4, HS6 or CN8)."),
                 
                 h5(strong("Limitations & caveats")),
-                h5("Currently, the tool contains Export PUR data for the period of",strong(em("Jan-Dec                    2022 and Jan-July 2023."))),
-                h5("The tool only contains PUR calculations for some countries and chapters. In some cases it will be because Exports were not eligible for preferential tariffs."),
-                h5("This tool contains UK export PUR data only."),
+                h5("Currently, the tool contains EU import from UK data for the period of",strong(em("Jan-Dec 20022 and Jan-July 2023."))),
                 br(),
                 
                 h5("App built by: Louise Anokye, October 2023"),
@@ -556,7 +551,7 @@ server <- function(input, output, session){
     if(input$Country == "EU"){
       
       valueBox(value = number_country$total,
-               subtitle = "Countries in the dataset (including EU Total)",
+               subtitle = "Countries in the dataset (including EU bloc)",
                color = "light-blue")
       
     }else{
@@ -702,7 +697,7 @@ server <- function(input, output, session){
       
       paste0(
         
-        "Lowest UK average PUR by CN8 (%)")
+        "Lowest PUR by CN8 (%)")
       
     }else{
       ## If the user selects a specific country , then the following title will appear for the CN8 graph 
@@ -723,7 +718,7 @@ server <- function(input, output, session){
       
       paste0(
         
-        "UK average PUR by HS2 (%)")
+        "Average PUR by HS2 (%)")
       
     }else{
       
@@ -801,12 +796,12 @@ server <- function(input, output, session){
       
       paste0(
         
-        "The graph below shows the average PUR rate for all agri-food products traded by the EU over time.")
+        "The graph below shows the average PUR rate for EU agrifood imports from the UK over the chosen year.")
       
     }else{
       ## If the user selects a specific country , then the following title will appear for the CN8 graph 
       
-      paste0("The graph below shows the average PUR rate for agri-food products traded by ", input$Country, " over time.")
+      paste0("The graph below shows the average PUR rate for agri-food products ", input$Country, " imported from the UK over the chosen year.")
       
     }
     
@@ -821,9 +816,9 @@ server <- function(input, output, session){
     if(input$Country == "EU"){
       
       paste0(
-        "The graph below presents the average PUR for all available countries by chapter (HS2). ",
+        "The graph below presents the average PUR for for the chosen country by chapter (HS2). ",
         HS2_data()$HS2_desc[which.min(HS2_data()$PUR)], " (Chapter ",  HS2_data()$HS2[which.min(HS2_data()$PUR)], ") has the lowest PUR of ",
-        round(min(HS2_data()$PUR, na.rm = T),2),"%. Note: this graph shows the export preference used (blue) as a share of the Total exports eligible for preference (grey). There are some HS Chapters which are all MFN zero and therefore no exports would be eligible for a preference."
+        round(min(HS2_data()$PUR, na.rm = T),2),"%. Note: this graph shows the import preference used (blue) as a share of the imports eligible for preference (grey). There are some HS Chapters which are all MFN zero and therefore no exports would be eligible for a preference."
       )
       
     }else{
@@ -836,10 +831,10 @@ server <- function(input, output, session){
              Chapter ", HS2_data()$HS2[which.min(HS2_data()$PUR)], " has the lowest PUR with ",
           round(min(HS2_data()$PUR, na.rm = T),2),"%. ", input$Country, " is ", 
           ifelse(min(HS2_data()$PUR, na.rm = T) < all_HS2()$PUR, " below ", " above "), 
-          "the total average PUR in this chapter, which is ", round(all_HS2()$PUR,2),"%.")
+          "the average PUR in this chapter, which is ", round(all_HS2()$PUR,2),"%.")
         
       }else{
-        paste0("No data available, please view the HS4-CN8 tables to see if there were any exports (regardless of preference)")
+        paste0("No data available, please view the HS4-CN8 tables to see if there were any imports (regardless of preference)")
       }
     }
     
@@ -901,7 +896,7 @@ server <- function(input, output, session){
                        panel.background = element_blank(),
                        axis.line = element_line(colour = "black"),
                        legend.position = "bottom"), tooltip = c("text")) %>%
-        layout(legend = list(orientation = "h", x = 0.2,y = -0.1, text = "Total Eligiable trade","Trade utilised"))
+        layout(legend = list(orientation = "h", x = 0.2,y = -0.1, text = "Total Eligible trade","Trade utilised"))
       
     } else {
       
@@ -1279,20 +1274,20 @@ server <- function(input, output, session){
     
     names(data_HS4)[names(data_HS4) == "country_name"] <- "Country Name"
     names(data_HS4)[names(data_HS4) == "HS4_desc"] <- "HS4 Description"
-    names(data_HS4)[names(data_HS4) == "Pref_Trade"] <- "Preferential Exports"
-    names(data_HS4)[names(data_HS4) == "Eligible_Trade"] <- "Eligible Exports"
-    names(data_HS4)[names(data_HS4) == "Total_ex"] <- "Total exports"
+    names(data_HS4)[names(data_HS4) == "Pref_Trade"] <- "Preferential Imports €"
+    names(data_HS4)[names(data_HS4) == "Eligible_Trade"] <- "Eligible Imports €"
+    names(data_HS4)[names(data_HS4) == "Total_ex"] <- "Total Imports €"
     names(data_HS4)[names(data_HS4) == "PUR"] <- "PUR (%)"
     
     
     datatable(data_HS4, 
               rownames = F, filter ="top",
               options = exprToFunction(list(searching = T, paging = F, dom = "Bfrtip",
-                                            scrollX = "100%", scrollY = "100%")), caption = "'Total Exports' reflects the UK's exports of these codes from this country, regardless of the eligibility or use of a preference regime, e.g. all exports.
-                                            'Eligible Exports' reflects the value of exports that were eligible for a tariff preference.
-                                            'Preferential Exports' reflects the value of exports that were actually exported under a tariff preference (e.g. used the preference).
-                                            'PUR (%)' reflects the Preference Utilisation rate, e.g. value of exports using preference divided by the value of exports that was eligible for a preference.
-                                             It is important to note that if the product has a tariff of MFN zero, then no preference exists and therefore there will be no eligible trade. If you want to check the tariff on a product, please see the Market Access app.") %>%
+                                            scrollX = "100%", scrollY = "100%")), caption = "'Total Imports' reflects the EU's imports of these codes from the UK, regardless of the eligibility or use of a preference regime, e.g. all imports.
+                                            'Eligible Imports' reflects the value of EU imports from the UK that were eligible for a tariff preference.
+                                            'Preferential Imports' reflects the value of EU imports from the UK that were actually imported under a tariff preference (e.g. used the preference).
+                                            'PUR (%)' reflects the Preference Utilisation rate, e.g. value of EU imports from the UK using preference divided by the value of EU imports from the UK that was eligible for a preference.
+                                             It is important to note that a) if the product has a tariff of MFN zero, then no preference exists and therefore there will be no eligible trade, and b) these values are presented in Euros.") %>%
       formatStyle(columns = c(4:7), textAlign = "right")
     
     
@@ -1365,20 +1360,20 @@ server <- function(input, output, session){
     
     names(data_HS6)[names(data_HS6) == "country_name"] <- "Country Name"
     names(data_HS6)[names(data_HS6) == "HS6_desc"] <- "HS6 Description"
-    names(data_HS6)[names(data_HS6) == "Pref_Trade"] <- "Preferential Exports"
-    names(data_HS6)[names(data_HS6) == "Eligible_Trade"] <- "Eligible Exports"
-    names(data_HS6)[names(data_HS6) == "Total_ex"] <- "Total Exports"
+    names(data_HS6)[names(data_HS6) == "Pref_Trade"] <- "Preferential Imports €"
+    names(data_HS6)[names(data_HS6) == "Eligible_Trade"] <- "Eligible Imports €"
+    names(data_HS6)[names(data_HS6) == "Total_ex"] <- "Total Imports €"
     names(data_HS6)[names(data_HS6) == "PUR"] <- "PUR (%)"
     
     
     datatable(data_HS6, 
               rownames = F, filter ="top",
               options = exprToFunction(list(searching = T, paging = F, dom = "Bfrtip",
-                                            scrollX = "100%", scrollY = "100%")),caption = "'Total Exports' reflects the UK's exports of these codes from this country, regardless of the eligibility or use of a preference regime, e.g. all exports.
-                                            'Eligible Exports' reflects the value of exports that were eligible for a tariff preference.
-                                            'Preferential Exports' reflects the value of exports that were actually exported under a tariff preference (e.g. used the preference).
-                                            'PUR (%)' reflects the Preference Utilisation rate, e.g. value of exports using preference divided by the value of exports that was eligible for a preference.
-                                            It is important to note that if the product has a tariff of MFN zero, then no preference exists and therefore there will be no eligible trade. If you want to check the tariff on a product, please see the Market Access app.") %>%
+                                            scrollX = "100%", scrollY = "100%")),caption = "'Total Imports' reflects the EU's imports of these codes from the UK, regardless of the eligibility or use of a preference regime, e.g. all imports.
+                                            'Eligible Imports' reflects the value of EU imports from the UK that were eligible for a tariff preference.
+                                            'Preferential Imports' reflects the value of EU imports from the UK that were actually imported under a tariff preference (e.g. used the preference).
+                                            'PUR (%)' reflects the Preference Utilisation rate, e.g. value of EU imports from the UK using preference divided by the value of EU imports from the UK that was eligible for a preference.
+                                              It is important to note that a) if the product has a tariff of MFN zero, then no preference exists and therefore there will be no eligible trade, and b) these values are presented in Euros.") %>%
       formatStyle(columns = c(4:7), textAlign = "right")
     
     
@@ -1445,20 +1440,20 @@ server <- function(input, output, session){
                                 big.mark = ",", big.interval = 3)
     
     names(data_CN8)[names(data_CN8) == "country_name"] <- "Country Name"
-    names(data_CN8)[names(data_CN8) == "Pref_Trade"] <- "Preferential Exports"
-    names(data_CN8)[names(data_CN8) == "Eligible_Trade"] <- "Eligible Exports"
-    names(data_CN8)[names(data_CN8) == "Total_ex"] <- "Total Exports"
+    names(data_CN8)[names(data_CN8) == "Pref_Trade"] <- "Preferential Exports € "
+    names(data_CN8)[names(data_CN8) == "Eligible_Trade"] <- "Eligible Exports €"
+    names(data_CN8)[names(data_CN8) == "Total_ex"] <- "Total Exports €"
     names(data_CN8)[names(data_CN8) == "PUR"] <- "PUR (%)"
     names(data_CN8)[names(data_CN8) == "CN8_desc"] <- "CN8 Description"
     
     datatable(data_CN8, 
               rownames = F, filter ="top",
               options = exprToFunction(list(searching = T, paging = F, dom = "Bfrtip",
-                                            scrollX = "100%", scrollY = "100%")),caption = "'Total Exports' reflects the UK's exports of these codes from this country, regardless of the eligibility or use of a preference regime, e.g. all exports.
-                                            'Eligible Exports' reflects the value of exports that were eligible for a tariff preference.
-                                            'Preferential Exports' reflects the value of exports that were actually exported under a tariff preference (e.g. used the preference).
-                                            'PUR (%)' reflects the Preference Utilisation rate, e.g. value of exports using preference divided by the value of exports that was eligible for a preference.
-                                            It is important to note that if the product has a tariff of MFN zero, then no preference exists and therefore there will be no eligible trade. If you want to check the tariff on a product, please see the Market Access app.") %>%
+                                            scrollX = "100%", scrollY = "100%")),caption = "'Total Imports' reflects the EU's imports of these codes from the UK, regardless of the eligibility or use of a preference regime, e.g. all imports.
+                                            'Eligible Imports' reflects the value of EU imports from the UK that were eligible for a tariff preference.
+                                            'Preferential Imports' reflects the value of EU imports from the UK that were actually imported under a tariff preference (e.g. used the preference).
+                                            'PUR (%)' reflects the Preference Utilisation rate, e.g. value of EU imports from the UK using preference divided by the value of EU imports from the UK that was eligible for a preference.
+                                              It is important to note that a) if the product has a tariff of MFN zero, then no preference exists and therefore there will be no eligible trade, and b) these values are presented in Euros.") %>%
       formatStyle(columns = c(4:7), textAlign = "right")
     
   }) 
