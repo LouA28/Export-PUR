@@ -17,44 +17,19 @@ library(png)
 library(scales)
 library(purrr)
 
-## Setting working directory - if you need to re-run this code, edit the file path to match yours
-#Louise's wd: C:/Users/x951160/OneDrive - Defra/UK to EU PUR data
-#Katie's wd: C:/Users/X946331/OneDrive - Defra/UK to EU PUR data
-
-#wd <- c("C:/Users/X946331/OneDrive - Defra/UK to EU PUR data")
-
 ## Importing PUR calculations
 
 PUR_exportdata <- readRDS("final_exportPUR2023-10-04.RDS")
 
-## Import PUR pref data
+## Importing PUR pref data
 
 Preftype_data <- readRDS("PUR_type of export preference2023-10-04.RDS")
-
 
 ##################### Creating dataframes that will link to different inputs of the app #############
 
 ## 1. PUR rates by chapter
 
-## This dataset calculates the PUR rate by each HS chapter (including chapters that do not have any PUR rates calculated) 
-## The Non-PUR column is created for the graph in the app that will help distinguish between what PTA is not used and what is not calculated in the graph.(without NAs)
-## This dataset calculates the PUR rate by each chapter (REMOVING ALL THE NAs)
-## This is used to create the function: all_HS2() - this calculates the HS chapter with the lowest PUR depending on the users choice of country - this is used in the reactive text for the HS graph
-
-## This dataset is used in the following function: HS2_data()
-
-
-HS2_df <- PUR_exportdata %>%
-  group_by(HS2,HS2_desc) %>%
-  summarise(PUR = sum(Pref_Trade)/sum(Eligible_Trade)*100,
-            NonPUR = 100-PUR, 
-            #~ adding the .groups means that it doesn't retain factor levels and avoids the warning message!
-            .groups = "drop")  
-
-
 ## PUR rates by chapter 
-
-
 HS2_df_2 <- PUR_exportdata %>%
   group_by(HS2,HS2_desc) %>%
   summarise(PUR = sum(Pref_Trade)/sum(Eligible_Trade)*100, .groups = "drop") %>%
