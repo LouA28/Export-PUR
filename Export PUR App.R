@@ -72,7 +72,7 @@ number_country <- data.frame(country_choice) %>%
 
 
 CN8_df <- PUR_exportdata %>%
-  group_by(CN8,CN8_desc)%>%
+  group_by(CN8,CN8_desc,year)%>%
   summarise(PUR = sum(Pref_Trade)/sum(Eligible_Trade)*100,
             .groups="drop")  %>%
   na.omit(PUR)
@@ -162,7 +162,7 @@ body <- dashboardBody(
                 h5(strong("4)"), "Select the tab for the aggregation level of interest (HS4, HS6 or CN8)."),
                 
                 h5(strong("Limitations & caveats")),
-                h5("Currently, the tool contains EU import from UK data for the period of",strong(em("Jan-Dec 20022 and Jan-July 2023."))),
+                h5("Currently, the tool contains EU import from UK data for the period of",strong(em("Jan-Dec 2022 and Jan-July 2023."))),
                 h5("This tool includes data for agrifood products (HS Chapters 1-23) only."),
                 br(),
                 
@@ -466,7 +466,7 @@ server <- function(input, output, session){
     
     if(input$Country != "EU"){
       
-      HS2_df_country <- PUR_exportdata %>%
+      HS2_df_country_2 <- PUR_exportdata %>%
         filter(country_name %in% input$Country & year %in% input$year) %>%
         group_by(HS2, HS2_desc) %>%
         summarise(PUR = sum(Pref_Trade)/sum(Eligible_Trade)*100,
@@ -805,8 +805,8 @@ server <- function(input, output, session){
           "The graph below examines ", input$Country, " 's PUR for each available HS2 code. 
              Chapter ", HS2_data()$HS2[which.min(HS2_data()$PUR)], " has the lowest PUR with ",
           round(min(HS2_data()$PUR, na.rm = T),2),"%. ", input$Country, " is ", 
-          ifelse(min(HS2_data()$PUR, na.rm = T) < all_HS2()$PUR, " below ", " above "), 
-          "the average PUR in this chapter, which is ", round(all_HS2()$PUR,2),"%.")
+          ifelse(min(HS2_data()$PUR, na.rm = T) < all_HS2()$PUR[all_HS2()$year == input$year], " below ", " above "), 
+          "the average PUR in this chapter, which is ", round(all_HS2()$PUR[all_HS2()$year == input$year],2),"%.")
         
       }else{
         paste0("No data available, please view the HS4-CN8 tables to see if there were any imports (regardless of preference)")
@@ -838,7 +838,7 @@ server <- function(input, output, session){
         paste0("The graph below displays the most underutilised preference at the CN8 level for ", 
                input$Country, " (excluding PUR = 0). ","CN8 code (", CN8_graph_data()$CN8[which.min(CN8_graph_data()$PUR)],")", " has
              the lowest PUR for ", input$Country," at ", round(min(CN8_graph_data()$PUR),2), "%.", " The average PUR for
-             this CN8 code is ", round(all_CN8()$PUR,2), "%.")  
+             this CN8 code is ", round(all_CN8()$PUR[all_CN8()$year == input$year],2), "%.")  
         
       }else{
         ## so if there is no data plotted in the cn8 graph, then this message will appear        
