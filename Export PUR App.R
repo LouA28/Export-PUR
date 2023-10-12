@@ -31,7 +31,7 @@ Preftype_data <- readRDS("PUR_type of export preference2023-10-04.RDS")
 
 ## PUR rates by chapter 
 HS2_df_2 <- PUR_exportdata %>%
-  group_by(HS2,HS2_desc) %>%
+  group_by(HS2,HS2_desc, year) %>%
   summarise(PUR = sum(Pref_Trade)/sum(Eligible_Trade)*100, .groups = "drop") %>%
   na.omit(PUR)
 
