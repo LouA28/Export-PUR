@@ -9,7 +9,7 @@ library(tidyr)
 library(data.table)
 library(countrycode)
 
-wd <- c("C:/Users/x951160/OneDrive - Defra/UK to EU PUR data")
+#wd <- c("C:/Users/x951160/OneDrive - Defra/UK to EU PUR data")
 
 ## Importing data and combining annual files into one data frame - (note files are in dat format)
 
@@ -128,6 +128,10 @@ purcombocode$country_name <- if_else(purcombocode$cooalpha == "EU", "EU", purcom
 
 #Add in the HS descriptions to final PUR export calculations
 final_exportPUR <- inner_join(final_exportPUR, class, by = c("CN8"))
+
+#KE 12/10/2023 I noticed that we dropped 622 records at this point, because they're codes with XXX in and so
+#Have no corresponding entry in the class dataframe
+#Seems ok as eligibility and use are unknown
 
 #Check if any CN8s in the data aren't in our classifications file
 lost_records2 <- final_exportPUR %>%
