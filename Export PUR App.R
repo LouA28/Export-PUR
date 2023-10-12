@@ -121,7 +121,7 @@ HS2_code <- HS2_code[!duplicated(HS2_code),]
 
 ## This creates the header for the PUR app
 
-header <- dashboardHeader(title = "EU imports from UK PUR app")
+header <- dashboardHeader(title = "PUR app: EU imports from UK")
 
 sidebar <- dashboardSidebar(
   
@@ -147,10 +147,9 @@ body <- dashboardBody(
   tabItems(
     
     tabItem(tabName = "Overview",
-            h3(strong("Welcome to the EU imports from UK Preferential Utilisation Rate (PUR) app")),
+            h3(strong("Welcome to the EU imports from UK Preference Utilisation Rate (PUR) app")),
             
-            h5("This tool was produced by the Trade Analysis Project Delivery and Support (TAPS) team to present Preference Utilisation Rate (PUR) data for agrifood HS Chapters 1-23
-            reflecting EU imports from the UK."),
+            h5("This tool was produced by the Trade Analysis Project Delivery and Support (TAPS) team to present Preference Utilisation Rate (PUR) data for EU imports from the UK."),
             ## This box creates the overline for the box of the text
             box(title = "User Guide", status='primary', solidHeader=TRUE, width="100%", height="100%",
                 h5(strong("PUR Information:")),
@@ -183,16 +182,17 @@ body <- dashboardBody(
                 
                 h5(strong("How to use:")),
                 h5(strong("1)"),"Choose to view the PUR rates for the EU as a bloc or individual member states, and the year of interest."),
-                h5(strong("2)"), "An overview of the average PUR data for the chosen country is presented "),
-                h5(strong("3)"), "Select the HS2 Chapter of interest."),
+                h5(strong("2)"), "An overview of the average PUR data for the chosen country is presented."),
+                h5(strong("3)"), "If you'd like more detail, select the HS2 Chapter of interest."),
                 h5(strong("4)"), "Select the tab for the aggregation level of interest (HS4, HS6 or CN8)."),
                 
                 h5(strong("Limitations & caveats")),
                 h5("Currently, the tool contains EU import from UK data for the period of",strong(em("Jan-Dec 20022 and Jan-July 2023."))),
+                h5("This tool includes data for agrifood products (HS Chapters 1-23) only."),
                 br(),
                 
                 h5("App built by: Louise Anokye, October 2023"),
-                h5("Quality Assured: - "),
+                h5("Quality Assured: October 2023"),
                 
                 h5(strong(em("If you have any questions or queries, contact Louise Anokye (louise.anokye@defra.gov.uk) or Katie Earl (katie.earl@defra.gov.uk) 
              "))))
@@ -1440,9 +1440,9 @@ server <- function(input, output, session){
                                 big.mark = ",", big.interval = 3)
     
     names(data_CN8)[names(data_CN8) == "country_name"] <- "Country Name"
-    names(data_CN8)[names(data_CN8) == "Pref_Trade"] <- "Preferential Exports € "
-    names(data_CN8)[names(data_CN8) == "Eligible_Trade"] <- "Eligible Exports €"
-    names(data_CN8)[names(data_CN8) == "Total_ex"] <- "Total Exports €"
+    names(data_CN8)[names(data_CN8) == "Pref_Trade"] <- "Preferential Imports € "
+    names(data_CN8)[names(data_CN8) == "Eligible_Trade"] <- "Eligible Imports €"
+    names(data_CN8)[names(data_CN8) == "Total_ex"] <- "Total Imports €"
     names(data_CN8)[names(data_CN8) == "PUR"] <- "PUR (%)"
     names(data_CN8)[names(data_CN8) == "CN8_desc"] <- "CN8 Description"
     
