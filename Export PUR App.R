@@ -1016,52 +1016,53 @@ server <- function(input, output, session){
   # This extracts the average agri-food PUR by HS code over 12 months
   ## create reactive text
 
-#   filtered_graph_data <- reactive({
-# 
-#     monthly_HS2 <- PUR_exportdata %>%
-#       filter(year %in% input$year, HS2 %in% input$HSCode) %>%
-#       group_by(month, country_name) %>%
-#       summarise(agri_PUR = round(sum(Pref_Trade)/sum(Eligible_Trade)*100,1),
-#                 Country = if_else(c(country_name %in% input$Country | country_name == "EU"), country_name, "All"),.groups = "drop") %>%
-#       distinct() %>%
-#       na.omit()
-#     
-#     
-#     Monthly_countrychoice <- PUR_exportdata %>%
-#       filter(country_name %in% input$Country,year %in% input$year, HS2 %in% input$HSCode) %>%
-#       group_by(month, country_name) %>%
-#       summarise(agri_PUR = round(sum(Pref_Trade)/sum(Eligible_Trade)*100,1),.groups = "drop") %>%
-#       na.omit()
+  filtered_graph_data <- reactive({
+    
+    monthly_HS2 <- PUR_exportdata %>%
+      filter(year %in% input$year, HS2 %in% input$HSCode) %>%
+      group_by(month, country_name) %>%
+      summarise(agri_PUR = round(sum(Pref_Trade)/sum(Eligible_Trade)*100,1),
+                Country = if_else(c(country_name %in% input$Country | country_name == "EU"), country_name, "All"),.groups = "drop") %>%
+      distinct() %>%
+      na.omit()
+
+
+    Monthly_countrychoice <- PUR_exportdata %>%
+      filter(country_name %in% input$Country,year %in% input$year, HS2 %in% input$HSCode) %>%
+      group_by(month, country_name) %>%
+      summarise(agri_PUR = round(sum(Pref_Trade)/sum(Eligible_Trade)*100,1),.groups = "drop") %>%
+      na.omit()
+
+
+    Monthly_countryEU <- PUR_exportdata %>%
+      filter(country_name == "EU",year %in% input$year, HS2 %in% input$HSCode) %>%
+      group_by(month, country_name) %>%
+      summarise(agri_PUR = round(sum(Pref_Trade)/sum(Eligible_Trade)*100,1),.groups = "drop") %>%
+      na.omit()
+
+    list(monthly_HS2 = monthly_HS2, Monthly_countrychoice = Monthly_countrychoice, Monthly_countryEU = Monthly_countryEU)
+})
 #   
-# 
-#     Monthly_countryEU <- PUR_exportdata %>%
-#       filter(country_name == "EU",year %in% input$year, HS2 %in% input$HSCode) %>%
-#       group_by(month, country_name) %>%
-#       summarise(agri_PUR = round(sum(Pref_Trade)/sum(Eligible_Trade)*100,1),.groups = "drop") %>%
-#       na.omit()
-# 
-#     list(monthly_HS2 = monthly_HS2, Monthly_countrychoice = Monthly_countrychoice, Monthly_countryEU = Monthly_countryEU)
-# })
-#   
-# ## graph for monthly PUR by HS code and country
-#   
-#   output$trends_graph <- renderPlotly({ 
-#     if (nrow(monthly_HS2) == 0 || nrow(Monthly_countrychoice) == 0 || nrow(Monthly_countryEU) == 0) {
-#       # Handle the case where one or more data frames are empty
-#       return(plotly::plot_ly(x = NULL, y = NULL, type = "scatter", mode = "markers", text = "No data available"))
-#     } else {
-#       # Proceed with generating the plot
-#       ggplotly(ggplot(data = monthly_HS2, aes(x = month, y = agri_PUR, group = 1)) +
-#                  geom_point(color = "grey") +
-#                  geom_line(data = Monthly_countrychoice, aes(x = month, y = agri_PUR, group = 1), color = "blue") +
-#                  geom_line(data = Monthly_countryEU, aes(x = month, y = agri_PUR, group = 1), color = "black") +
-#                  theme_classic() +
-#                  theme(axis.title.x = element_blank(),
-#                        axis.text.x = element_text(angle = 90),
-#                        axis.title.y = element_blank()) +
-#                  scale_x_discrete(labels=c("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec")))
-#     }
-# })
+## graph for monthly PUR by HS code and country
+
+  output$trends_graph <- renderPlotly({
+    if (nrow(filtered_graph_data()$monthly_HS2) == 0 || nrow(filtered_graph_data()$Monthly_countrychoice) == 0 || nrow(filtered_graph_data()$Monthly_countryEU) == 0) {
+      
+      return(plotly::plot_ly(x = NULL, y = NULL, type = "scatter", mode = "markers", text = "No data available"))
+    
+      } else {
+
+      ggplotly(ggplot(data = filtered_graph_data()$monthly_HS2, aes(x = month, y = agri_PUR, group = 1)) +
+                 geom_point(color = "grey") +
+                 geom_line(data = filtered_graph_data()$Monthly_countrychoice, aes(x = month, y = agri_PUR, group = 1), color = "blue") +
+                 geom_line(data = filtered_graph_data()$Monthly_countryEU, aes(x = month, y = agri_PUR, group = 1), color = "black") +
+                 theme_classic() +
+                 theme(axis.title.x = element_blank(),
+                       axis.text.x = element_text(angle = 90),
+                       axis.title.y = element_blank()) +
+                 scale_x_discrete(labels=c("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec")))
+    }
+})
 
   
   # Treemap graphs
