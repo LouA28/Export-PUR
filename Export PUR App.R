@@ -17,7 +17,7 @@ library(png)
 library(scales)
 library(purrr)
 
-## Importing PUR calculations
+## Importing PUR calculationss
 
 PUR_exportdata <- readRDS("final_exportPUR2023-10-04.RDS")
 
