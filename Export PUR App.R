@@ -871,7 +871,7 @@ server <- function(input, output, session){
                        panel.background = element_blank(),
                        axis.line = element_line(colour = "black"),
                        legend.position = "bottom"), tooltip = c("text")) %>%
-        layout(legend = list(orientation = "h", x = 0.2,y = -0.1, text = "Total Eligible trade","Trade utilised"))
+        layout(legend = list(orientation = "h", x = 0.2,y = -0.1))
       
     } else {
       
@@ -890,7 +890,7 @@ server <- function(input, output, session){
                          panel.background = element_blank(),
                          axis.line = element_line(colour = "black"),
                          legend.position = "bottom"), tooltip = c("text")) %>%
-          layout(legend = list(orientation = "h", x = 0.2,y = -0.1, text = "Total Eligiable trade","Trade utilised"))
+          layout(legend = list(orientation = "h", x = 0.2,y = -0.1))
       }
     }
   })
@@ -1060,8 +1060,10 @@ server <- function(input, output, session){
                  theme(axis.title.x = element_blank(),
                        axis.text.x = element_text(angle = 90),
                        axis.title.y = element_blank()) +
-                 scale_x_discrete(labels=c("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec")), tooltip = c("text"))
-    }
+                 scale_x_discrete(labels=c("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec")), tooltip = c("text")) %>%
+                 layout(legend = list(orientation = "h"))
+                 
+        }
 })
 
   
