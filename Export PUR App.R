@@ -406,7 +406,7 @@ server <- function(input, output, session){
                   
                   tabPanel("CN8",DT::dataTableOutput("CN8_table")),
                   
-                  ## Monthly trends tab - EDIT!
+                  ## Monthly trends tab
                   ############################################################################################################## 
                   tabPanel("Monthly Trends", 
                            box(status='primary', solidHeader=TRUE, width="100%", height="100%",
@@ -1052,7 +1052,7 @@ server <- function(input, output, session){
     
       } else {
 
-      ggplotly(ggplot(data = filtered_graph_data()$monthly_HS2, aes(x = month, y = agri_PUR, group = 1)) +
+      ggplotly(ggplot(data = filtered_graph_data()$monthly_HS2, aes(x = month, y = agri_PUR, group = 1,text = paste0(country_name," ",agri_PUR,"%"))) +
                  geom_point(color = "grey") +
                  geom_line(data = filtered_graph_data()$Monthly_countrychoice, aes(x = month, y = agri_PUR, group = 1), color = "blue") +
                  geom_line(data = filtered_graph_data()$Monthly_countryEU, aes(x = month, y = agri_PUR, group = 1), color = "black") +
@@ -1060,7 +1060,7 @@ server <- function(input, output, session){
                  theme(axis.title.x = element_blank(),
                        axis.text.x = element_text(angle = 90),
                        axis.title.y = element_blank()) +
-                 scale_x_discrete(labels=c("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec")))
+                 scale_x_discrete(labels=c("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec")), tooltip = c("text"))
     }
 })
 
