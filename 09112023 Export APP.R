@@ -912,7 +912,7 @@ server <- function(input, output, session){
         
         "This graph below represents the monthly average Agri-food PURs for the EU over time.",
         " The BLACK line represents the monthly average PURS for the EU.",
-        " The GREY line represents the monthly average PURS for each individual member state.",
+        " The GREY points represent the monthly average PURS for each individual member state.",
         " The BLUE line represents the monthly average PURS for the selected individual country.")
       
     }else{
@@ -920,7 +920,7 @@ server <- function(input, output, session){
       
       paste0("This graph below represents the monthly average Agri-food PURs for ", input$Country, " over time (%).",
              " The BLACK line represents the monthly average PURS for the EU.",
-             " The GREY line represents the monthly average PURS for each individual member state.",
+             " The GREY points represent the monthly average PURS for each individual member state.",
              " The BLUE line represents the monthly average PURS for the selected individual country.")
       
     }
