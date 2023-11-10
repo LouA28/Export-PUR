@@ -262,6 +262,7 @@ server <- function(input, output, session){
     
   }) #close observe event
   
+  ## create function
   
   ## This selects available HS codes dependent on country/countries selected - 
   ## This picks up the right input country variable to use
