@@ -741,7 +741,7 @@ server <- function(input, output, session){
           result$total
         }
       },
-      subtitle = paste0("of", input$Country,"'s", " CN8 lines had preference eligible exports from the UK"),
+      subtitle = paste0("of ", input$Country,"'s", " CN8 lines had preference eligible exports from the UK"),
       color = "light-blue")
     
     }
@@ -1226,7 +1226,7 @@ server <- function(input, output, session){
   
   output$elig_text_2 <- renderText({
     
-    paste0("From ", input$Country,", the UK is eligible for ", treemapdata(Preftype_data,input$Country,input$year,"eligibility_name")$item ,".", input$Country,"'s", " imports from the UK under this preference was €", format(treemapdata(Preftype_data,input$Country,input$year,"eligibility_name")$Value, big.mark = ","), ".")
+    paste0("From ", input$Country,", the UK is eligible for ", treemapdata(Preftype_data,input$Country,input$year,"eligibility_name")$item ,". ", input$Country,"'s", " imports from the UK under this preference was €", format(treemapdata(Preftype_data,input$Country,input$year,"eligibility_name")$Value, big.mark = ","), ".")
   })
   
   
@@ -1242,7 +1242,7 @@ server <- function(input, output, session){
   
   output$use_text_2 <- renderText({
     
-    paste0("The UK used ", treemapdata(Preftype_data,input$Country,input$year,"use_name")$item ,".",input$Country,"'s", " imports from the UK under this preference was €", format(treemapdata(Preftype_data,input$Country,input$year,"use_name")$Value, big.mark = ","), ".")
+    paste0("The UK used ", treemapdata(Preftype_data,input$Country,input$year,"use_name")$item ,". ",input$Country,"'s", " imports from the UK under this preference was €", format(treemapdata(Preftype_data,input$Country,input$year,"use_name")$Value, big.mark = ","), ".")
     
   })
   
@@ -1257,7 +1257,7 @@ server <- function(input, output, session){
   #Combo text 2
   
   output$combo_text_2 <- renderText({
-    paste0("The UK used (", treemapdata(Preftype_data,input$Country,input$year,"combination_code")$item ,").",input$Country,"'s", " imports from the UK under this preference was € ", format(treemapdata(Preftype_data,input$Country,input$year,"combination_code")$Value, big.mark = ","), ".")
+    paste0("The UK used (", treemapdata(Preftype_data,input$Country,input$year,"combination_code")$item ,"). ",input$Country,"'s", " imports from the UK under this preference was € ", format(treemapdata(Preftype_data,input$Country,input$year,"combination_code")$Value, big.mark = ","), ".")
     
   })
 
