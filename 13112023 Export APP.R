@@ -55,7 +55,7 @@ country_choice <- country_choice[order(country_choice)]
 ## The country_choice is now converted into a dataframe called 'country' which can be used to create the dropdown for the user to select the country of their choice in the app
 country <- data.frame(country_choice)
 
-## The number_country dataset is used to calculate the total number of countries in the dataset which will be displayed in one of the green boxes in the app. 
+## The number_country dataset is used to calculate the total number of countries in the dataset which will be displayed in one of the blue boxes in the app. 
 
 number_country <- data.frame(country_choice) %>%
   summarise(total = length(country_choice))
@@ -712,13 +712,13 @@ server <- function(input, output, session){
     
   })
   
-  ## This generates the values in the green boxes in the summary page
+  ## This generates the values in the blue boxes in the summary page
   
   ## First Value box showing number of countries in dataset or number of CN8 products available for the selected country
   
   output$observations <- renderUI({
     
-    ## if the user selects 'All', then the first green value box will show the number of countries in the dataset
+    ## if the user selects 'All', then the first blue value box will show the number of countries in the dataset
     
     req(length(input$Country) >0)
     
@@ -741,9 +741,9 @@ server <- function(input, output, session){
           result$total
         }
       },
-      subtitle = paste0("CN8 lines had preference eligible exports from ", input$Country),
+      subtitle = paste0("of", input$Country,"'s", " CN8 lines had preference eligible exports from the UK"),
       color = "light-blue")
-      
+    
     }
     
   })
@@ -792,7 +792,7 @@ server <- function(input, output, session){
   
   ## Third value box showing number of CN8 codes that have 100% PUR
   
-  ## If the user selects a specific country, then the third green value box will show the number of cn8 codes that have 100% PUR rates by country
+  ## If the user selects a specific country, then the third blue value box will show the number of cn8 codes that have 100% PUR rates by country
   
   output$max_CN8 <- renderValueBox({
     
@@ -817,7 +817,7 @@ server <- function(input, output, session){
       
     }else{
       
-      ## if the user selects 'All', then the third green value box will show the total number of CN8 lines that have 100% PUR rates
+      ## if the user selects 'All', then the third blue value box will show the total number of CN8 lines that have 100% PUR rates
       
       valueBox(value = {
         result <-  calculateCN8all100(PUR_exportdata, input$Country, input$year)
@@ -908,17 +908,17 @@ server <- function(input, output, session){
       paste0(
         
         "This graph below represents the monthly average Agri-food PURs for the EU over time.",
-        " The BLACK line represents the monthly average PURS for the EU.",
-        " The GREY point represents the monthly average PURS for each individual member state.",
-        " The BLUE line represents the monthly average PURS for the selected individual country.")
+        " The BLACK line represents the monthly average PURs for the EU.",
+        " The GREY point represents the monthly average PURs for each individual member state.",
+        " The BLUE line represents the monthly average PURs for the selected individual country.")
       
     }else{
       ## If the user selects a specific country , then the following title will appear for the CN8 graph 
       
       paste0("This graph below represents the monthly average Agri-food PURs for ", input$Country, " over time (%).",
-             " The BLACK line represents the monthly average PURS for the EU.",
-             " The GREY point represents the monthly average PURS for each individual member state.",
-             " The BLUE line represents the monthly average PURS for the selected individual country.")
+             " The BLACK line represents the monthly average PURs for the EU.",
+             " The GREY point represents the monthly average PURs for each individual member state.",
+             " The BLUE line represents the monthly average PURs for the selected individual country.")
       
     }
     
@@ -972,7 +972,7 @@ server <- function(input, output, session){
       paste0(
         "The graph below presents the average PUR for for the chosen country by chapter (HS2). ",
         HS2_data()$HS2_desc[which.min(HS2_data()$PUR)], " (Chapter ",  HS2_data()$HS2[which.min(HS2_data()$PUR)], ") has the lowest PUR of ",
-        round(min(HS2_data()$PUR, na.rm = T),2),"%. Note: this graph shows the import preference used (blue) as a share of the imports eligible for preference (grey). There are some HS Chapters which are all MFN zero and therefore no exports would be eligible for a preference."
+        round(min(HS2_data()$PUR, na.rm = T),2),"%. Note: this graph shows the import preference used (blue) as a share of the imports eligible for preference (grey). There are some HS Chapters which are all MFN zero and therefore no imports would be eligible for a preference."
       )
       
     }else{
@@ -1004,7 +1004,7 @@ server <- function(input, output, session){
     
     if(input$Country == "EU"){
       
-      "The graph below presents the CN8 codes with the lowest average PURs (excluding PUR = 0)."
+      "The graph below presents the CN8 codes with the lowest average PURs (assuming eligible trade exists and the PUR is non-zero)."
       
     }else{
       ## If the user selects 'EU', then the following text will accompany the CN8 graph
@@ -1015,7 +1015,7 @@ server <- function(input, output, session){
         ## However, the text will only display if a CN8 graph can be generated - there are examples of a country that does not have any trade reported, therefore the cn8 graph will not generate any data
         
         paste0("The graph below displays the most underutilised preference at the CN8 level for ", 
-               input$Country, " (excluding PUR = 0). ","CN8 code (", CN8_graph_data()$CN8[which.min(CN8_graph_data()$PUR)],")", " has
+               input$Country, " (assuming eligible trade exists and the PUR is non-zero). ","CN8 code (", CN8_graph_data()$CN8[which.min(CN8_graph_data()$PUR)],")", " has
              the lowest PUR for ", input$Country," at ", round(min(CN8_graph_data()$PUR),2), "%.", " The average PUR for
              this CN8 code is ", round(all_CN8()$PUR[all_CN8()$year == input$year],2), "%.")  
         
@@ -1143,7 +1143,7 @@ server <- function(input, output, session){
   ## A function is created for each treemap, which will be used to generate the treemaps
 
   itemvar <- function(myval){
-    paste0("£",round(myval/1000000,1),"m")
+    paste0("€",round(myval/1000000,1),"m")
   }
   
   
@@ -1226,7 +1226,7 @@ server <- function(input, output, session){
   
   output$elig_text_2 <- renderText({
     
-    paste0("From ", input$Country,", the UK is eligible for ", treemapdata(Preftype_data,input$Country,input$year,"eligibility_name")$item ,".", " UK exports from this country under this preference was £", format(treemapdata(Preftype_data,input$Country,input$year,"eligibility_name")$Value, big.mark = ","), ".")
+    paste0("From ", input$Country,", the UK is eligible for ", treemapdata(Preftype_data,input$Country,input$year,"eligibility_name")$item ,".", input$Country,"'s", " imports from the UK under this preference was €", format(treemapdata(Preftype_data,input$Country,input$year,"eligibility_name")$Value, big.mark = ","), ".")
   })
   
   
@@ -1242,7 +1242,7 @@ server <- function(input, output, session){
   
   output$use_text_2 <- renderText({
     
-    paste0("The UK used ", treemapdata(Preftype_data,input$Country,input$year,"use_name")$item ,".", " UK exports from this country under this preference was £", format(treemapdata(Preftype_data,input$Country,input$year,"use_name")$Value, big.mark = ","), ".")
+    paste0("The UK used ", treemapdata(Preftype_data,input$Country,input$year,"use_name")$item ,".",input$Country,"'s", " imports from the UK under this preference was €", format(treemapdata(Preftype_data,input$Country,input$year,"use_name")$Value, big.mark = ","), ".")
     
   })
   
@@ -1257,7 +1257,7 @@ server <- function(input, output, session){
   #Combo text 2
   
   output$combo_text_2 <- renderText({
-    paste0("The UK used (", treemapdata(Preftype_data,input$Country,input$year,"combination_code")$item ,").", " UK exports from this country under this combination was £", format(treemapdata(Preftype_data,input$Country,input$year,"combination_code")$Value, big.mark = ","), ".")
+    paste0("The UK used (", treemapdata(Preftype_data,input$Country,input$year,"combination_code")$item ,").",input$Country,"'s", " imports from the UK under this preference was € ", format(treemapdata(Preftype_data,input$Country,input$year,"combination_code")$Value, big.mark = ","), ".")
     
   })
 
