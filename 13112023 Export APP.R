@@ -104,77 +104,74 @@ calculatenumberCN8country<- function(data, selectedCountry, selectedYear) {
     summarise(total = sum(seq), .groups = "drop")
   
 }
-  ## function 3 - created to calculate the average HS2 PUR available for the selected country
-  
-  calculatenumberHS2country<- function(data, selectedCountry, selectedYear) {
-    result <-  data %>%
-      filter(country_name %in% selectedCountry, year %in% selectedYear) %>%
-      ungroup() %>%
-      summarise(agri_PUR = round(sum(Pref_Trade)/sum(Eligible_Trade)*100,1), .groups = "drop")
-    
-  }
-  
-  ## function 4 - number of average PUR for all agrifood chapters (1-23)
-  
-  calculatenumberHS2all<- function(data,selectedYear) {
-    result <- data %>%
-      filter(year %in% selectedYear) %>%
-      ungroup() %>%
-      summarise(agri_PUR = round(sum(Pref_Trade)/sum(Eligible_Trade)*100,1), .groups = "drop")
+## function 3 - created to calculate the average HS2 PUR available for the selected country
 
-  }
+calculatenumberHS2country<- function(data, selectedCountry, selectedYear) {
+  result <-  data %>%
+    filter(country_name %in% selectedCountry, year %in% selectedYear) %>%
+    ungroup() %>%
+    summarise(agri_PUR = round(sum(Pref_Trade)/sum(Eligible_Trade)*100,1), .groups = "drop")
   
-  ## function 5 - calculated to show the number of cn8 codes that have 100% PUR rates by country
+}
+
+## function 4 - number of average PUR for all agrifood chapters (1-23)
+
+calculatenumberHS2all<- function(data,selectedYear) {
+  result <- data %>%
+    filter(year %in% selectedYear) %>%
+    ungroup() %>%
+    summarise(agri_PUR = round(sum(Pref_Trade)/sum(Eligible_Trade)*100,1), .groups = "drop")
   
-  calculateCN8Pur100 <- function(data, selectedCountry, selectedYear) {
-    df <- data %>%
-      filter(country_name %in% selectedCountry, year %in% selectedYear, Eligible_Trade > 0) %>%
-      group_by(CN8, CN8_desc) %>%
-      summarise(PUR = round(sum(Pref_Trade)/sum(Eligible_Trade)*100, 2), .groups = "drop")
-    
-    Percent_df <- data %>%
-      filter(country_name %in% selectedCountry, year %in% selectedYear, Eligible_Trade > 0) %>%
-      group_by(CN8, CN8_desc) %>%
-      summarise(PUR = round(sum(Pref_Trade)/sum(Eligible_Trade)*100, 2), .groups = "drop") %>%
-      filter(PUR == 100) %>%
-      summarise(Percentage = round(n()/ nrow(df)*100, 1), .groups = "drop")
-    
-    return(Percent_df)
-  }
+}
+
+## function 5 - calculated to show the number of cn8 codes that have 100% PUR rates by country
+
+calculateCN8Pur100 <- function(data, selectedCountry, selectedYear) {
+  df <- data %>%
+    filter(country_name %in% selectedCountry, year %in% selectedYear, Eligible_Trade > 0) %>%
+    group_by(CN8, CN8_desc) %>%
+    summarise(PUR = round(sum(Pref_Trade)/sum(Eligible_Trade)*100, 2), .groups = "drop")
   
- ## function 6 - calculate the total number of CN8 lines that have 100% PUR rates
+  Percent_df <- df %>%
+    filter(PUR == 100) %>%
+    summarise(Percentage = round(n()/ nrow(df)*100, 1), .groups = "drop")
   
-  calculateCN8all100 <- function(data, selectedCountry, selectedYear) {
-    result <-  data %>%
-      filter(year %in% selectedYear) %>%
-      group_by(CN8) %>%
-      summarise(PUR = sum(Pref_Trade)/sum(Eligible_Trade)*100,.groups = "drop") %>% 
-      filter(PUR == 100) %>%
-      summarise(Percentage = round(n()/ nrow(CN8_df)*100,1), .groups = "drop")
-  }
+  return(Percent_df)
+}
+
+## function 6 - calculate the total number of CN8 lines that have 100% PUR rates
+
+calculateCN8all100 <- function(data, selectedCountry, selectedYear) {
+  result <-  data %>%
+    filter(year %in% selectedYear) %>%
+    group_by(CN8) %>%
+    summarise(PUR = sum(Pref_Trade)/sum(Eligible_Trade)*100,.groups = "drop") %>% 
+    filter(PUR == 100) %>%
+    summarise(Percentage = round(n()/ nrow(CN8_df)*100,1), .groups = "drop")
+}
+
+## function 7- create a HS2 graph function that creates the interactive HS2 graph that shows the PUR/Non PUR rates by chapter
+
+createHS2Plot <- function(HS2_PUR) {
+  plot <- ggplotly(ggplot(HS2_PUR, aes(fill = PUR_Type, y = PUR_rate, x = HS2, text = paste0(HS2_desc))) +
+                     geom_bar(position = "stack", stat = "identity") +
+                     scale_fill_manual(values = c("#A9A9A9", "#159ecc")) +
+                     theme(axis.title.x = element_blank(), axis.text.x = element_text(angle = 90),
+                           axis.title.y = element_blank(),
+                           legend.title = element_text(size = 10),
+                           panel.grid.major = element_blank(),
+                           panel.grid.minor = element_blank(),
+                           panel.background = element_blank(),
+                           axis.line = element_line(colour = "black"),
+                           legend.position = "bottom"), tooltip = c("text")) %>%
+    layout(legend = list(orientation = "h", x = 0.2, y = -0.1, text = "Total Eligible trade", "Trade utilised"))
   
-  ## function 7- create a HS2 graph function that creates the interactive HS2 graph that shows the PUR/Non PUR rates by chapter
-  
-  createHS2Plot <- function(HS2_PUR) {
-    plot <- ggplotly(ggplot(HS2_PUR, aes(fill = PUR_Type, y = PUR_rate, x = HS2, text = paste0(HS2_desc))) +
-                       geom_bar(position = "stack", stat = "identity") +
-                       scale_fill_manual(values = c("#A9A9A9", "#159ecc")) +
-                       theme(axis.title.x = element_blank(), axis.text.x = element_text(angle = 90),
-                             axis.title.y = element_blank(),
-                             legend.title = element_text(size = 10),
-                             panel.grid.major = element_blank(),
-                             panel.grid.minor = element_blank(),
-                             panel.background = element_blank(),
-                             axis.line = element_line(colour = "black"),
-                             legend.position = "bottom"), tooltip = c("text")) %>%
-      layout(legend = list(orientation = "h", x = 0.2, y = -0.1, text = "Total Eligible trade", "Trade utilised"))
-    
-    return(plot)
-  }
-  
-  ## function 8 - calculate the bottom CN8 PURs for the specific country selected
-  
-  getBottomCN8Country <- function(data, selectedCountry, selectedYear) {
+  return(plot)
+}
+
+## function 8 - calculate the bottom CN8 PURs for the specific country selected
+
+getBottomCN8Country <- function(data, selectedCountry, selectedYear) {
   CN8_df_2 <- data %>%
     filter(country_name %in% selectedCountry, year %in% selectedYear) %>%
     group_by(CN8, CN8_desc) %>%
@@ -188,11 +185,11 @@ calculatenumberCN8country<- function(data, selectedCountry, selectedYear) {
   
   return(Bottom_CN8_country)
   
-  }
-  
-  ## function 9 - calculate the bottom CN8 PURs for all countries
-  
-  getBottomCN8all <- function(data,selectedYear) {
+}
+
+## function 9 - calculate the bottom CN8 PURs for all countries
+
+getBottomCN8all <- function(data,selectedYear) {
   CN8_df <- data %>%
     filter(year %in% selectedYear) %>%
     group_by(CN8,CN8_desc)%>%
@@ -206,107 +203,107 @@ calculatenumberCN8country<- function(data, selectedCountry, selectedYear) {
     tail(10)
   return(Bottom_CN8)
   
-  }
-  
-  ## function 10  - creates the monthly agri PUR data for the monthly graph in summary page
-  
-  getAgriGraphData <- function(data, selectedCountry, selectedYear) {
-    if (selectedCountry != "EU") {
-      av_agri_graph <- data %>%
-        filter(country_name %in% selectedCountry, year %in% selectedYear) %>%
-        group_by(month, country_name) %>%
-        summarise(agri_PUR = round(sum(Pref_Trade) / sum(Eligible_Trade) * 100, 1), .groups = "drop")
-      return(av_agri_graph)
-      
-    } else {
-      av_agri_graph <- data %>%
-        filter(year %in% selectedYear) %>%
-        group_by(month) %>%
-        summarise(agri_PUR = round(sum(Pref_Trade) / sum(Eligible_Trade) * 100, 1), .groups = "drop")
-      return(av_agri_graph)
-    }
-  }
-  
-  ## function 11 - creates the Monthly data for the Monthly trends graph
-  
-  MonthlyHS2graphdata <- function(data, selectedYear, selectedHSCode, selectedCountry) {
-    monthly_HS2 <- data %>%
-      filter(year %in% selectedYear, HS2 %in% selectedHSCode) %>%
+}
+
+## function 10  - creates the monthly agri PUR data for the monthly graph in summary page
+
+getAgriGraphData <- function(data, selectedCountry, selectedYear) {
+  if (selectedCountry != "EU") {
+    av_agri_graph <- data %>%
+      filter(country_name %in% selectedCountry, year %in% selectedYear) %>%
       group_by(month, country_name) %>%
-      summarise(agri_PUR = round(sum(Pref_Trade)/sum(Eligible_Trade)*100,1),
-                Country = if_else(c(country_name %in% selectedCountry | country_name == "EU"), country_name, "All"),.groups = "drop") %>%
-      distinct() %>%
-      na.omit()
-  }
-  
-  Monthlygraphdata <- function(data, selectedCountry, selectedYear, selectedHSCode) {
-    summary_data <- data %>%
-      filter(country_name %in% selectedCountry, year %in% selectedYear, HS2 %in% selectedHSCode) %>%
-      group_by(month, country_name) %>%
-      summarise(agri_PUR = round(sum(Pref_Trade) / sum(Eligible_Trade) * 100, 1), .groups = "drop") %>%
-      na.omit()
+      summarise(agri_PUR = round(sum(Pref_Trade) / sum(Eligible_Trade) * 100, 1), .groups = "drop")
+    return(av_agri_graph)
     
+  } else {
+    av_agri_graph <- data %>%
+      filter(year %in% selectedYear) %>%
+      group_by(month) %>%
+      summarise(agri_PUR = round(sum(Pref_Trade) / sum(Eligible_Trade) * 100, 1), .groups = "drop")
+    return(av_agri_graph)
   }
+}
+
+## function 11 - creates the Monthly data for the Monthly trends graph
+
+MonthlyHS2graphdata <- function(data, selectedYear, selectedHSCode, selectedCountry) {
+  monthly_HS2 <- data %>%
+    filter(year %in% selectedYear, HS2 %in% selectedHSCode) %>%
+    group_by(month, country_name) %>%
+    summarise(agri_PUR = round(sum(Pref_Trade)/sum(Eligible_Trade)*100,1),
+              Country = if_else(c(country_name %in% selectedCountry | country_name == "EU"), country_name, "All"),.groups = "drop") %>%
+    distinct() %>%
+    na.omit()
+}
+
+Monthlygraphdata <- function(data, selectedCountry, selectedYear, selectedHSCode) {
+  summary_data <- data %>%
+    filter(country_name %in% selectedCountry, year %in% selectedYear, HS2 %in% selectedHSCode) %>%
+    group_by(month, country_name) %>%
+    summarise(agri_PUR = round(sum(Pref_Trade) / sum(Eligible_Trade) * 100, 1), .groups = "drop") %>%
+    na.omit()
   
-  ## function 12 - creates the monthly graph in the monthly trends tab
+}
+
+## function 12 - creates the monthly graph in the monthly trends tab
+
+MonthlytrendsPlot <- function(data, data_choice, data_EU) {
+  gg <- ggplot(data, aes(x = month, y = agri_PUR, group = 1, text = paste0(country_name, " ", agri_PUR, "%"))) +
+    geom_point(color = "grey") +
+    geom_line(data = data_choice, aes(x = month, y = agri_PUR, group = 1), color = "blue") +
+    geom_line(data = data_EU, aes(x = month, y = agri_PUR, group = 1), color = "black") +
+    theme_classic() +
+    theme(axis.title.x = element_blank(),
+          axis.text.x = element_text(angle = 90),
+          axis.title.y = element_blank()) +
+    scale_x_discrete(labels = c("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"))
   
-  MonthlytrendsPlot <- function(data, data_choice, data_EU) {
-    gg <- ggplot(data, aes(x = month, y = agri_PUR, group = 1, text = paste0(country_name, " ", agri_PUR, "%"))) +
-      geom_point(color = "grey") +
-      geom_line(data = data_choice, aes(x = month, y = agri_PUR, group = 1), color = "blue") +
-      geom_line(data = data_EU, aes(x = month, y = agri_PUR, group = 1), color = "black") +
+  return(ggplotly(gg, tooltip = c("text")))
+}
+
+## function 13 - filters the HS codes for the HS tables
+
+filterPURData <- function(data, country, year1, HSCode) {
+  if (length(country) > 1) {
+    filtered_data <- data %>%
+      filter(HS2 %in% HSCode, country_name %in% country, year %in% year1)
+  } else if (country %in% "All") {
+    filtered_data <- data %>%
+      filter(HS2 %in% HSCode)
+  } else {
+    filtered_data <- data %>%
+      filter(HS2 %in% HSCode, country_name %in% country, year %in% year1)
+  }
+}
+
+## function 14 - Creates the CN8 graph for the bottom CN8 graph in the summary page
+
+createCN8Plot <- function(data) {
+  ggplotly(
+    ggplot(data, aes(x = reorder(CN8, PUR), y = PUR,
+                     text = paste0(CN8_desc, "<br>", PUR, "%")))
+    + geom_bar(stat = "identity", fill = "#159ecc") +
       theme_classic() +
-      theme(axis.title.x = element_blank(),
-            axis.text.x = element_text(angle = 90),
-            axis.title.y = element_blank()) +
-      scale_x_discrete(labels = c("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"))
-    
-    return(ggplotly(gg, tooltip = c("text")))
-  }
-  
-  ## function 13 - filters the HS codes for the HS tables
-  
-  filterPURData <- function(data, country, year, HSCode) {
-    if (length(country) > 1) {
-      filtered_data <- data %>%
-        filter(HS2 %in% HSCode, country_name %in% country, year %in% year)
-    } else if (country %in% "All") {
-      filtered_data <- data %>%
-        filter(HS2 %in% HSCode)
-    } else {
-      filtered_data <- data %>%
-        filter(HS2 %in% HSCode, country_name %in% country, year %in% year)
-    }
-  }
-  
-  ## function 14 - Creates the CN8 graph for the bottom CN8 graph in the summary page
-  
-  createCN8Plot <- function(data) {
-    ggplotly(
-      ggplot(data, aes(x = reorder(CN8, PUR), y = PUR,
-                       text = paste0(CN8_desc, "<br>", PUR, "%")))
-      + geom_bar(stat = "identity", fill = "#159ecc") +
-        theme_classic() +
-        theme(axis.title.x = element_blank(), axis.text.x = element_text(angle = 90),
-              axis.title.y = element_blank(),
-              plot.title = element_text(size = 12, hjust = 0.01)), tooltip = c("text")
-    )
-  }
-  
-  ## function 15 - creates the graph for the monthly trens graph in the summary page
-  
-  createMonthlyPlot <- function(data) {
-    ggplotly(
-      ggplot(data, aes(x = month, y = agri_PUR, group = 1, text = paste0(agri_PUR, "%")))
-      + geom_line(linetype = "dashed", color = "blue")
-      + geom_point(color = "blue")
-      + theme_bw()
-      + theme(axis.title.x = element_blank(), axis.text.x = element_text(angle = 90),
-              axis.title.y = element_blank())
-      + scale_x_discrete(labels = c("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"))
-      + scale_y_continuous(limits = c(0, max(data$agri_PUR) + 10)), tooltip = c("text")
-    )
-  }
+      theme(axis.title.x = element_blank(), axis.text.x = element_text(angle = 90),
+            axis.title.y = element_blank(),
+            plot.title = element_text(size = 12, hjust = 0.01)), tooltip = c("text")
+  )
+}
+
+## function 15 - creates the graph for the monthly trens graph in the summary page
+
+createMonthlyPlot <- function(data) {
+  ggplotly(
+    ggplot(data, aes(x = month, y = agri_PUR, group = 1, text = paste0(agri_PUR, "%")))
+    + geom_line(linetype = "dashed", color = "blue")
+    + geom_point(color = "blue")
+    + theme_bw()
+    + theme(axis.title.x = element_blank(), axis.text.x = element_text(angle = 90),
+            axis.title.y = element_blank())
+    + scale_x_discrete(labels = c("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"))
+    + scale_y_continuous(limits = c(0, max(data$agri_PUR) + 10)), tooltip = c("text")
+  )
+}
 
 ##################### Creating a list for the app, adding "All" to my list of HS2 codes for dropdowns #############
 
@@ -689,9 +686,9 @@ server <- function(input, output, session){
   HS2_data <- reactive({
     
     HS2_df <- calculateHS2PurData(PUR_exportdata, input$Country, input$year) 
-  
+    
   })
-
+  
   all_HS2 <- reactive({
     
     
@@ -734,7 +731,7 @@ server <- function(input, output, session){
       
       valueBox(value = {
         result <- calculatenumberCN8country(PUR_exportdata, input$Country, input$year)
-    
+        
         if(result$total==0) {
           "N/A"
         }else{
@@ -743,7 +740,7 @@ server <- function(input, output, session){
       },
       subtitle = paste0("of ", input$Country,"'s", " CN8 lines had preference eligible exports from the UK"),
       color = "light-blue")
-    
+      
     }
     
   })
@@ -759,21 +756,21 @@ server <- function(input, output, session){
     if(input$Country != "EU"){
       
       valueBox(value = {
-      result <- calculatenumberHS2country(PUR_exportdata, input$Country, input$year)
-      
-      if(is.na(result$agri_PUR)) {
-        "N/A"
-      }else{
-        result$agri_PUR
+        result <- calculatenumberHS2country(PUR_exportdata, input$Country, input$year)
         
-      }
+        if(is.na(result$agri_PUR)) {
+          "N/A"
+        }else{
+          result$agri_PUR
+          
+        }
       },              
       subtitle = paste0("average PUR from eligible ", input$Country, 
                         " agri-food products"),
       color = "light-blue")
       
     }else{
-
+      
       ## if the user selects 'EU', then the second blue value box will show the average PUR rate for all agrifood products in the dataset
       
       valueBox(value = {
@@ -1084,7 +1081,7 @@ server <- function(input, output, session){
     
     if (nrow(CN8_graph_data())>0){
       
-    createCN8Plot(CN8_graph_data()) 
+      createCN8Plot(CN8_graph_data()) 
       
     }else{
       
@@ -1115,7 +1112,7 @@ server <- function(input, output, session){
   ## create reactive text
   
   filtered_graph_data <- reactive({
-
+    
     monthly_HS2 <- MonthlyHS2graphdata(PUR_exportdata,input$year,input$HSCode,input$Country)
     Monthly_countrychoice <- Monthlygraphdata(PUR_exportdata, input$Country, input$year, input$HSCode)
     Monthly_countryEU <- Monthlygraphdata(PUR_exportdata, "EU", input$year, input$HSCode)
@@ -1124,7 +1121,7 @@ server <- function(input, output, session){
   })
   
   ## graph for monthly PUR by HS code and country
-
+  
   output$trends_graph <- renderPlotly({
     if (nrow(filtered_graph_data()$monthly_HS2) == 0 || nrow(filtered_graph_data()$Monthly_countrychoice) == 0 || nrow(filtered_graph_data()$Monthly_countryEU) == 0) {
       
@@ -1141,7 +1138,7 @@ server <- function(input, output, session){
   # Treemap graphs
   
   ## A function is created for each treemap, which will be used to generate the treemaps
-
+  
   itemvar <- function(myval){
     paste0("€",round(myval/1000000,1),"m")
   }
@@ -1260,7 +1257,7 @@ server <- function(input, output, session){
     paste0("The UK used (", treemapdata(Preftype_data,input$Country,input$year,"combination_code")$item ,"). ",input$Country,"'s", " imports from the UK under this preference was € ", format(treemapdata(Preftype_data,input$Country,input$year,"combination_code")$Value, big.mark = ","), ".")
     
   })
-
+  
   ## HS4 Tab 
   ########################################################################################################
   
@@ -1534,6 +1531,5 @@ ui <- dashboardPage(skin = "blue",
 
 shinyApp(ui = ui, server = server)
 
-    
-    
-  
+
+
