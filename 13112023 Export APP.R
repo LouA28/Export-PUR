@@ -73,7 +73,7 @@ CN8_df <- PUR_exportdata %>%
             .groups="drop")  %>%
   na.omit(PUR)
 
-##################################### functions ################################################
+##################################### functions #################################################
 
 ## function 1 - to create the function for the HS2 graph
 
