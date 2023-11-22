@@ -254,7 +254,7 @@ Monthlygraphdata <- function(data, selectedCountry, selectedYear, selectedHSCode
 MonthlytrendsPlot <- function(data, data_choice, data_EU) {
   gg <- ggplot(data, aes(x = month, y = agri_PUR, group = 1, text = paste0(country_name, " ", agri_PUR, "%"))) +
     geom_point(color = "grey") +
-    geom_line(data = data_choice, aes(x = month, y = agri_PUR, group = 1), color = "blue") +
+    geom_line(data = data_choice, aes(x = month, y = agri_PUR, group = 1), color = "lightblue") +
     geom_line(data = data_EU, aes(x = month, y = agri_PUR, group = 1), color = "black") +
     theme_classic() +
     theme(axis.title.x = element_blank(),
