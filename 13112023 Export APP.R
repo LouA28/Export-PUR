@@ -1,4 +1,4 @@
-#Load libraries
+#Load libraries     
 
 library(shiny)
 library(readxl)
@@ -73,7 +73,7 @@ CN8_df <- PUR_exportdata %>%
             .groups="drop")  %>%
   na.omit(PUR)
 
-##################################### functions #################################################
+##################################### functions ################################################
 
 ## function 1 - to create the function for the HS2 graph
 
@@ -357,7 +357,7 @@ body <- dashboardBody(
                 
                 h5("Although the UK and EU have agreed tariff-free, quota-free access under the TCA, this only applies where the goods meet the relevant Rules of Origin and therefore not all trade between the two parties will qualify for zero tariffs."),
                 
-                h5("Understanding where preferences are being used (and where they are not), through Preference Utlisation Rate data can inform HMG's efforts to increase trade and inform the work to revisit the TCA."), 
+                h5("Understanding where preferences are being used (and where they are not), through Preference Utilisation Rate data can inform HMG's efforts to increase trade and inform the work to revisit the TCA."), 
                 
                 h5("A Preference Utilisation Rate (PUR) reflects the value of goods entering under trade preferences as a share of the total value of goods that were eligible for preference."),
                 
@@ -373,9 +373,9 @@ body <- dashboardBody(
                 
                 br(),
                 
-                h5("The data presented in this app covers EU imports from the UK (the data is declared by the EU, but reflects the trade flows moving from the UK to the EU) - meaning that it measures the total value of EU imports from UK that entered under a preferential tariff regime, as a proportion of the total value of EU imports from UK that were eligible for preferential tariffs."),
+                h5("The data presented in this app covers EU imports from the UK, so the PURs measures the total value of EU imports from UK that entered under a preferential tariff regime, as a proportion of the total value of EU imports from UK that were eligible for preferential tariffs."),
                 h5("Imports are considered eligible for a preference (i.e. the denominator) if there is one or more preferential tariffs available for that good from the specified partner country in the month of reporting, and that preferential rate is lower than the MFN tariff that would otherwise apply."),
-                h5("Imports are recorded as using their preference (i.e. the numerator) if they were exported under a preferential regime."),
+                h5("Imports are recorded as using their preference (i.e. the numerator) if they were imported under a preferential regime."),
                 h5("Imports are excluded from the eligibility total if they entered under conditions where a preferential tariff wouldn't reasonably be used - this includes: "),
                 h5("- Imports entering under special processing procedures that would permit goods to enter duty-free or under a reduced rate (i.e. inward or outward processing)."), 
                 h5("- Imports where a preference is eligible but entered duty-free under MFN terms due to a measure such as suspensions or non-preferential TRQs."),
@@ -393,7 +393,7 @@ body <- dashboardBody(
                 br(),
                 
                 h5("App built by: Louise Anokye, October 2023"),
-                h5("Quality Assured: October 2023"),
+                h5("Quality Assured: November 2023"),
                 
                 h5(strong(em("If you have any questions or queries, contact Louise Anokye (louise.anokye@defra.gov.uk) or Katie Earl (katie.earl@defra.gov.uk) 
              "))))
@@ -738,7 +738,7 @@ server <- function(input, output, session){
           result$total
         }
       },
-      subtitle = paste0("of ", input$Country,"'s", " CN8 lines had preference eligible exports from the UK"),
+      subtitle = paste0("of ", input$Country,"'s", " CN8 lines had preference eligible imports from the UK"),
       color = "light-blue")
       
     }
@@ -808,7 +808,7 @@ server <- function(input, output, session){
         }
       },
       
-      subtitle = paste0("Percent of the lines with a PUR with ",input$Country, " which have full utilisation (e.g. a PUR of 100%)"),
+      subtitle = paste0("Percent of the lines with a PUR with ",input$Country, " have full utilisation (e.g. a PUR of 100%)"),
       color = "light-blue")
       
       
@@ -906,15 +906,14 @@ server <- function(input, output, session){
         
         "This graph below represents the monthly average Agri-food PURs for the EU over time.",
         " The BLACK line represents the monthly average PURs for the EU.",
-        " The GREY point represents the monthly average PURs for each individual member state.",
-        " The BLUE line represents the monthly average PURs for the selected individual country.")
+        " The GREY points represent the monthly average PURs for each individual member state.")
       
     }else{
       ## If the user selects a specific country , then the following title will appear for the CN8 graph 
       
       paste0("This graph below represents the monthly average Agri-food PURs for ", input$Country, " over time (%).",
              " The BLACK line represents the monthly average PURs for the EU.",
-             " The GREY point represents the monthly average PURs for each individual member state.",
+             " The GREY points represent the monthly average PURs for each individual member state.",
              " The BLUE line represents the monthly average PURs for the selected individual country.")
       
     }
@@ -1215,7 +1214,7 @@ server <- function(input, output, session){
   
   output$elig_text_1 <- renderText({
     
-    paste0("The treemap shows which export preferences ", input$Country, " offer that the UK is eligible for.")
+    paste0("The treemap shows which import preferences ", input$Country, " offer for which the UK is eligible.")
     
   })
   
@@ -1231,7 +1230,7 @@ server <- function(input, output, session){
   
   output$use_text_1 <- renderText({
     
-    paste0("The treemap shows the export preferences that the UK used from ", input$Country,".")
+    paste0("The treemap shows the import preferences ", input$Country," used when importing from the UK.")
     
   })
   
@@ -1239,7 +1238,7 @@ server <- function(input, output, session){
   
   output$use_text_2 <- renderText({
     
-    paste0("The UK used ", treemapdata(Preftype_data,input$Country,input$year,"use_name")$item ,". ",input$Country,"'s", " imports from the UK under this preference was €", format(treemapdata(Preftype_data,input$Country,input$year,"use_name")$Value, big.mark = ","), ".")
+    paste0(input$Country, " used ", treemapdata(Preftype_data,input$Country,input$year,"use_name")$item ," when importing from the UK. ", input$Country,"'s imports from the UK under this preference was €", format(treemapdata(Preftype_data,input$Country,input$year,"use_name")$Value, big.mark = ","), ".")
     
   })
   
@@ -1247,14 +1246,14 @@ server <- function(input, output, session){
   
   output$combo_text_1 <- renderText({
     
-    paste0("The treemap shows the combination of export preferences offered by ", input$Country, " in which the UK exported under.")
+    paste0("The treemap shows the combination of import preferences offered and used by ", input$Country, " when importing from the UK.")
     
   })
   
   #Combo text 2
   
   output$combo_text_2 <- renderText({
-    paste0("The UK used (", treemapdata(Preftype_data,input$Country,input$year,"combination_code")$item ,"). ",input$Country,"'s", " imports from the UK under this preference was € ", format(treemapdata(Preftype_data,input$Country,input$year,"combination_code")$Value, big.mark = ","), ".")
+    paste0(input$Country, " used ", treemapdata(Preftype_data,input$Country,input$year,"combination_code")$item ,". ",input$Country,"'s", " imports from the UK under this preference was € ", format(treemapdata(Preftype_data,input$Country,input$year,"combination_code")$Value, big.mark = ","), ".")
     
   })
   
@@ -1530,6 +1529,3 @@ ui <- dashboardPage(skin = "blue",
                     header, sidebar, body)    
 
 shinyApp(ui = ui, server = server)
-
-
-
