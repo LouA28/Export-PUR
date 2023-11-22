@@ -143,11 +143,15 @@ calculateCN8Pur100 <- function(data, selectedCountry, selectedYear) {
 
 calculateCN8all100 <- function(data, selectedCountry, selectedYear) {
   result <-  data %>%
-    filter(year %in% selectedYear) %>%
-    group_by(CN8) %>%
-    summarise(PUR = sum(Pref_Trade)/sum(Eligible_Trade)*100,.groups = "drop") %>% 
+    filter(year %in% selectedYear, Eligible_Trade>0) %>%
+    group_by(CN8, CN8_desc) %>%
+    summarise(PUR = round(sum(Pref_Trade)/sum(Eligible_Trade)*100,2), .groups = "drop") 
+  
+  Percent_dfEU<- result %>%
     filter(PUR == 100) %>%
-    summarise(Percentage = round(n()/ nrow(CN8_df)*100,1), .groups = "drop")
+    summarise(Percentage = round(n()/ nrow(result)*100,1), .groups = "drop")
+  
+  return(Percent_dfEU)
 }
 
 ## function 7- create a HS2 graph function that creates the interactive HS2 graph that shows the PUR/Non PUR rates by chapter
