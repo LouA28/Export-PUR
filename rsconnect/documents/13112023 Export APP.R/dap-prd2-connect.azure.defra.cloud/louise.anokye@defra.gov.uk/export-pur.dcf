@@ -5,10 +5,10 @@ account: louise.anokye@defra.gov.uk
 server: dap-prd2-connect.azure.defra.cloud
 hostUrl: https://dap-prd2-connect.azure.defra.cloud/__api__
 appId: 149
-bundleId: 883
+bundleId: 897
 url: https://dap-prd2-connect.azure.defra.cloud/eupur/
-when: 1700661722.73607
-lastSyncTime: 1700661722.73608
+when: 1700677224.66551
+lastSyncTime: 1700677224.66552
 asMultiple: FALSE
 asStatic: FALSE
 ignoredFiles: 09112023 Export APP.R|Export PUR App.R|PUR_type of export preference2023-10-04.xlsx|UK to EU export PUR.R|UKexEU data for manual QA2023-10-04.xlsx|final_exportPUR2023-10-04.xlsx

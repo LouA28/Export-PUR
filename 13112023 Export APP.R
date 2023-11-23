@@ -254,7 +254,7 @@ Monthlygraphdata <- function(data, selectedCountry, selectedYear, selectedHSCode
 MonthlytrendsPlot <- function(data, data_choice, data_EU) {
   gg <- ggplot(data, aes(x = month, y = agri_PUR, group = 1, text = paste0(country_name, " ", agri_PUR, "%"))) +
     geom_point(color = "grey") +
-    geom_line(data = data_choice, aes(x = month, y = agri_PUR, group = 1), color = "lightblue") +
+    geom_line(data = data_choice, aes(x = month, y = agri_PUR, group = 1), color = "red") +
     geom_line(data = data_EU, aes(x = month, y = agri_PUR, group = 1), color = "black") +
     theme_classic() +
     theme(axis.title.x = element_blank(),
@@ -918,7 +918,7 @@ server <- function(input, output, session){
       paste0("This graph below represents the monthly average Agri-food PURs for ", input$Country, " over time (%).",
              " The BLACK line represents the monthly average PURs for the EU.",
              " The GREY points represent the monthly average PURs for each individual member state.",
-             " The BLUE line represents the monthly average PURs for the selected individual country.")
+             " The RED line represents the monthly average PURs for the selected individual country.")
       
     }
     
