@@ -1,0 +1,14 @@
+name: export-pur
+title: Export-PUR
+username: louise.anokye@defra.gov.uk
+account: louise.anokye@defra.gov.uk
+server: dap-prd2-connect.azure.defra.cloud
+hostUrl: https://dap-prd2-connect.azure.defra.cloud/__api__
+appId: 149
+bundleId: 1244
+url: https://dap-prd2-connect.azure.defra.cloud/eupur/
+when: 1706179144.05326
+lastSyncTime: 1706179144.05327
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: .RData|13112023 Export APP.R|15012024 Export APP.R|PUR eligibility.xlsx|PUR_type of export preference2023-10-04.RDS|PUR_type of export preference2024-01-15.RDS|UK to EU export PUR.R|final_exportPUR2023-10-04.RDS|final_exportPUR2024-01-15.RDS
