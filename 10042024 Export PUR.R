@@ -24,11 +24,11 @@ library(formattable)
 
 ## Importing PUR calculations
 
-PUR_exportdata <- readRDS("final_exportPUR2024-04-09.RDS")
+PUR_exportdata <- readRDS("final_exportPUR2024-04-18.RDS")
 
 ## Importing PUR pref data
 
-Preftype_data <- readRDS("PUR_type of export preference2024-04-09.RDS")
+Preftype_data <- readRDS("PUR_type of export preference2024-04-18.RDS")
 
 
 ##################### Creating dataframes and functions that will link to different inputs of the app #############
@@ -123,7 +123,7 @@ New_data_exports <- PUR_exportdata %>%
 
 ## Add the data for the latest data pull
 
-New_data_exports$date_stamp <- c("Eurostat 18-03-2024")
+New_data_exports$date_stamp <- c("Eurostat 16-04-2024")
 
 ## combine the two datasets (old and new)
 
@@ -140,7 +140,7 @@ data_diff_exports$Date <- as.factor(data_diff_exports$Date)
 # # Reverse order of levels of Date variable
 
 data_diff_exports$date_stamp <- factor(data_diff_exports$date_stamp, 
-                                            levels = c("Eurostat 18-03-2024","Eurostat 25-01-2024"))
+                                            levels = c("Eurostat 16-04-2024","Eurostat 18-03-2024")) 
 
 data_diff_exports$date_stamp <- factor(data_diff_exports$date_stamp, levels = rev(levels(data_diff_exports$date_stamp)))
 
@@ -467,7 +467,7 @@ createrevisions_graph <- function(data){
       geom_bar(position = "dodge", stat = "identity") +
       scale_x_discrete(labels = function(x) gsub("-\\d{2}$", "", x)) +
       theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1), legend.position = "bottom", axis.title.x = element_blank()) +
-      scale_fill_discrete(name = "Data difference", breaks = c("Eurostat 25-01-2024)","Eurostat 18-03-2024)")) +
+      scale_fill_discrete(name = "Data difference", breaks = c("Eurostat 25-01-2024)","Eurostat 18-04-2024)")) +
       ylab("EU imports from the UK (€)") +
       scale_y_continuous(labels = comma), tooltip = c("text")
   )
@@ -670,9 +670,9 @@ body <- dashboardBody(
                 h5(strong("4)"), "Select the tab for the aggregation level of interest (HS4, HS6 or CN8)."),
                 
                 h5(strong("Limitations & caveats")),
-                h5("Currently, the tool contains EU import from UK data for the period of",strong(em("Jan-Dec 2022, Jan-Dec 2023, and Jan 2024."))),
+                h5("Currently, the tool contains EU import from UK data for the period of",strong(em("Jan-Dec 2022, Jan-Dec 2023, and Jan - Feb 2024."))),
                 h5("This tool includes data for agrifood products (HS Chapters 1-24) only."),
-                h5("The data is subject to revision by Eurostat. The current version is based on PUR data as at 18/03/2024."),
+                h5("The data is subject to revision by Eurostat. The current version is based on PUR data as at 16/04/2024."),
                 br(),
                 
                 h5("App built by: Louise Anokye, October 2023"),
@@ -1139,7 +1139,7 @@ server <- function(input, output, session){
         if(result$total==0) {
           "N/A"
         }else{
-          result$total
+          format(result$total,",")
         }
       },
       subtitle = paste0("of ", input$Country,"'s", " CN8 lines had preference eligible imports from the UK"),
@@ -1166,7 +1166,7 @@ server <- function(input, output, session){
         if(is.na(result$agri_PUR)) {
           "N/A"
         }else{
-          result$agri_PUR
+          paste0(result$agri_PUR,"%")
           
         }
       },              
@@ -1182,7 +1182,7 @@ server <- function(input, output, session){
         
         result <- calculatenumberHS2all(PUR_exportdata,input$year)
         
-        result$agri_PUR
+        paste0(result$agri_PUR,"%")
       }, 
       
       subtitle = paste0("Average preference utilisation rate across agri-food products"),
@@ -1209,7 +1209,7 @@ server <- function(input, output, session){
         if(is.na(Percent_df$Percentage)){
           "N/A"
         }else{
-          Percent_df$Percentage
+          paste0(Percent_df$Percentage,"%")
         }
       },
       
@@ -1225,7 +1225,7 @@ server <- function(input, output, session){
         result <-  calculateCN8all100(PUR_exportdata, input$Country, input$year)
         
         
-        result$Percentage
+        paste0(result$Percentage,"%")
         
       },
       subtitle = paste0("Percent of the lines with a PUR have full utilisation (e.g. a PUR of 100%)"),
@@ -1709,11 +1709,11 @@ server <- function(input, output, session){
     }
   })
   
-
+  
   output$Timeseries_text <- renderText({
     
     if(input$agriproduct == "Total Agri"){
-    
+      
       paste("The graph below shows the monthly agrifood PURs by HS section over time (%).",
             " The RED line represents Section 1: Live animals; animal products.",
             " The GREEN line represents Section 2: Vegetable products.",
@@ -1722,7 +1722,7 @@ server <- function(input, output, session){
             " The BLACK line represents the monthly PUR for Agri (the total of those four sections).")
     }else{
       
-    
+      
     }
     
   })
