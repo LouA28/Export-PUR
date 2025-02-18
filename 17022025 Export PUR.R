@@ -144,7 +144,7 @@ data_diff_exports$Date <- as.factor(data_diff_exports$Date)
 # # Reverse order of levels of Date variable
 
 data_diff_exports$date_stamp <- factor(data_diff_exports$date_stamp, 
-                                       levels = c("Eurostat 17-02-2025","Eurostat 17-01-2025", "Eurostat 17-12-2024", "Eurostat 18-11-2024")) 
+                                       levels = c("Eurostat 17-02-2025","Eurostat 17-12-2024", "Eurostat 18-11-2024")) 
 
 data_diff_exports$date_stamp <- factor(data_diff_exports$date_stamp, levels = rev(levels(data_diff_exports$date_stamp)))
 
