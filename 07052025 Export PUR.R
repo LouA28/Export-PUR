@@ -728,7 +728,7 @@ body <- dashboardBody(
                 br(),
                 
                 h5("App built by: Louise Anokye, October 2023"),
-                h5("Quality Assured: Katie Earl, February 2025"),
+                h5("Quality Assured: Katie Earl, May 2025"),
                 
                 h5(strong(em("If you have any questions or queries, contact Louise Anokye (louise.anokye@defra.gov.uk), Katie Earl (katie.earl@defra.gov.uk) 
              "))))
@@ -1897,7 +1897,7 @@ server <- function(input, output, session){
   itemvar <- function(myval){
     paste0("£",round(myval/1000000,1),"m")
   }
-
+  
   treemapdata <- function (mycountry1,myyear1,myitem1) {
     preprocessed_data <- switch(
       myitem1,
