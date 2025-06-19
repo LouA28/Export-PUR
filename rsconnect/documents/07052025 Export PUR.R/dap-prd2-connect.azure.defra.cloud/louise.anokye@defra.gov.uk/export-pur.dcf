@@ -1,0 +1,13 @@
+name: export-pur
+title: Export-PUR
+username: louise.anokye@defra.gov.uk
+account: louise.anokye@defra.gov.uk
+server: dap-prd2-connect.azure.defra.cloud
+hostUrl: https://dap-prd2-connect.azure.defra.cloud/__api__
+appId: 149
+bundleId: 7157
+url: https://dap-prd2-connect.azure.defra.cloud/eupur/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: EUpreprocessed data.R|Archive
