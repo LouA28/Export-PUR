@@ -135,7 +135,7 @@ country <- data.frame(country_choice)
 
 ############################################################
 
-New_data_exports$date_stamp <- c("Eurostat 13-06-2025")
+New_data_exports$date_stamp <- c("Eurostat 17-07-2025")
 
 ## combine the two datasets (old and new)
 
@@ -152,7 +152,7 @@ data_diff_exports$Date <- as.factor(data_diff_exports$Date)
 # # Reverse order of levels of Date variable
 
 data_diff_exports$date_stamp <- factor(data_diff_exports$date_stamp, 
-                                       levels = c("Eurostat 18-11-2024","Eurostat 17-12-2024","Eurostat 17-02-2025","Eurostat 07-05-2025","Eurostat 16-05-2025","Eurostat 13-06-2025")) 
+                                       levels = c("Eurostat 18-11-2024","Eurostat 17-12-2024","Eurostat 17-02-2025","Eurostat 07-05-2025","Eurostat 16-05-2025","Eurostat 13-06-2025","Eurostat 17-07-2025")) 
 
 #data_diff_exports$date_stamp <- factor(data_diff_exports$date_stamp, levels = rev(levels(data_diff_exports$date_stamp)))
 
@@ -722,13 +722,13 @@ body <- dashboardBody(
                 h5(strong("4)"), "Select the tab for the aggregation level of interest (HS4, HS6 or CN8)."),
                 
                 h5(strong("Limitations & caveats")),
-                h5("Currently, the tool contains EU import from UK data for the period of",strong(em("2022,2023,2024 and Jan-Mar 2025."))),
+                h5("Currently, the tool contains EU import from UK data for the period of",strong(em("2022,2023,2024 and Jan-May 2025."))),
                 h5("This tool includes data for agrifood products (HS Chapters 1-24) only."),
-                h5("The data is subject to revision by Eurostat. The current version is based on PUR data as at 13/06/2025."),
+                h5("The data is subject to revision by Eurostat. The current version is based on PUR data as at 17/07/2025."),
                 br(),
                 
                 h5("App built by: Louise Anokye, October 2023"),
-                h5("Quality Assured: Katie Earl, June 2025"),
+                h5("Quality Assured: Katie Earl, July 2025"),
                 
                 h5(strong(em("If you have any questions or queries, contact Louise Anokye (louise.anokye@defra.gov.uk), Katie Earl (katie.earl@defra.gov.uk) 
              "))))
