@@ -14,11 +14,11 @@ library(scales)
 library(lubridate)
 
 
-PUR_exportdata <- readRDS("final_exportPUR2025-05-16.RDS")
+PUR_exportdata <- readRDS("final_exportPUR2025-07-17.RDS")
 
 ## Importing PUR pref data
 
-Preftype_data <- readRDS("PUR_type of export preference2025-05-16.RDS")
+Preftype_data <- readRDS("PUR_type of export preference2025-07-17.RDS")
 
 PUR_exportdata$period <- ymd(paste(PUR_exportdata$period, "01", sep = "-"))
 
