@@ -128,7 +128,7 @@ country <- data.frame(country_choice)
 
 ############################################################
 
-New_data_exports$date_stamp <- c("Eurostat 18-08-2025")
+New_data_exports$date_stamp <- c("Eurostat 15-09-2025")
 
 ## combine the two datasets (old and new)
 
@@ -145,7 +145,7 @@ data_diff_exports$Date <- as.factor(data_diff_exports$Date)
 # # Reverse order of levels of Date variable
 
 data_diff_exports$date_stamp <- factor(data_diff_exports$date_stamp, 
-                                       levels = c("Eurostat 18-11-2024","Eurostat 17-12-2024","Eurostat 17-02-2025","Eurostat 07-05-2025","Eurostat 16-05-2025","Eurostat 13-06-2025","Eurostat 17-07-2025","Eurostat 18-08-2025")) 
+                                       levels = c("Eurostat 18-11-2024","Eurostat 17-12-2024","Eurostat 17-02-2025","Eurostat 07-05-2025","Eurostat 16-05-2025","Eurostat 13-06-2025","Eurostat 17-07-2025","Eurostat 18-08-2025","Eurostat 15-09-2025")) 
 
 #data_diff_exports$date_stamp <- factor(data_diff_exports$date_stamp, levels = rev(levels(data_diff_exports$date_stamp)))
 
@@ -493,7 +493,7 @@ createrevisions_graph <- function(data){
       geom_bar(position = "dodge", stat = "identity") +
       scale_x_discrete(labels = function(x) gsub("-\\d{2}$", "", x)) +
       theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1), legend.position = "bottom", axis.title.x = element_blank()) +
-      scale_fill_discrete(name = "Data difference", breaks = c("Eurostat 18-11-2024", "Eurostat 17-12-2024", "Eurostat 17-02-2025","Eurostat 07-05-2025","Eurostat 16-05-2025")) +
+      scale_fill_discrete(name = "Data difference", breaks = c("Eurostat 18-11-2024", "Eurostat 17-12-2024", "Eurostat 17-02-2025","Eurostat 07-05-2025","Eurostat 16-05-2025","Eurostat 15-09-2025")) +
       ylab("EU imports from the UK (€)") +
       scale_y_continuous(labels = scales::label_comma()), tooltip = c("text")
   )
@@ -715,13 +715,13 @@ body <- dashboardBody(
                 h5(strong("4)"), "Select the tab for the aggregation level of interest (HS4, HS6 or CN8)."),
                 
                 h5(strong("Limitations & caveats")),
-                h5("Currently, the tool contains EU import from UK data for the period of",strong(em("2022,2023,2024 and Jan-Jun 2025."))),
+                h5("Currently, the tool contains EU import from UK data for the period of",strong(em("2022,2023,2024 and Jan-July 2025."))),
                 h5("This tool includes data for agrifood products (HS Chapters 1-24) only."),
-                h5("The data is subject to revision by Eurostat. The current version is based on PUR data as at 18/08/2025."),
+                h5("The data is subject to revision by Eurostat. The current version is based on PUR data as at 15/09/2025."),
                 br(),
                 
                 h5("App built by: Louise Anokye, October 2023"),
-                h5("Quality Assured: Katie Earl, August 2025"),
+                h5("Quality Assured: Katie Earl, Sept 2025"),
                 
                 h5(strong(em("If you have any questions or queries, contact Louise Anokye (louise.anokye@defra.gov.uk), Katie Earl (katie.earl@defra.gov.uk) 
              "))))
@@ -1890,7 +1890,7 @@ server <- function(input, output, session){
   itemvar <- function(myval){
     paste0("£",round(myval/1000000,1),"m")
   }
-
+  
   treemapdata <- function (mycountry1,myyear1,myitem1) {
     preprocessed_data <- switch(
       myitem1,
