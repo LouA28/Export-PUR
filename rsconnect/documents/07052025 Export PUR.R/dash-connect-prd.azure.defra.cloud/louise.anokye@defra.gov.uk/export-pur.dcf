@@ -1,0 +1,13 @@
+name: export-pur
+title: Export-PUR
+username: louise.anokye@defra.gov.uk
+account: louise.anokye@defra.gov.uk
+server: dash-connect-prd.azure.defra.cloud
+hostUrl: https://dash-connect-prd.azure.defra.cloud/__api__
+appId: 95
+bundleId: 231
+url: https://dash-connect-prd.azure.defra.cloud/content/fb56c2eb-91da-45dd-b531-e2bb7c9d1b25/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: EUpreprocessed data.R|Archive
