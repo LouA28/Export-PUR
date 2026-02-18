@@ -128,7 +128,7 @@ country <- data.frame(country_choice)
 
 ############################################################
 
-New_data_exports$date_stamp <- c("Eurostat 16-01-2026")
+New_data_exports$date_stamp <- c("Eurostat 18-02-2026")
 
 ## combine the two datasets (old and new)
 
@@ -145,7 +145,7 @@ data_diff_exports$Date <- as.factor(data_diff_exports$Date)
 # # Reverse order of levels of Date variable
 
 data_diff_exports$date_stamp <- factor(data_diff_exports$date_stamp, 
-                                       levels = c("Eurostat 13-06-2025","Eurostat 17-07-2025","Eurostat 18-08-2025","Eurostat 15-09-2025","Eurostat 20-10-2025","Eurostat 17-11-2025","Eurostat 06-01-2026","Eurostat 16-01-2026")) 
+                                       levels = c("Eurostat 20-10-2025","Eurostat 17-11-2025","Eurostat 06-01-2026","Eurostat 16-01-2026","Eurostat 18-02-2026")) 
 
 #data_diff_exports$date_stamp <- factor(data_diff_exports$date_stamp, levels = rev(levels(data_diff_exports$date_stamp)))
 
@@ -493,7 +493,7 @@ createrevisions_graph <- function(data){
       geom_bar(position = "dodge", stat = "identity") +
       scale_x_discrete(labels = function(x) gsub("-\\d{2}$", "", x)) +
       theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1), legend.position = "bottom", axis.title.x = element_blank()) +
-      scale_fill_discrete(name = "Data difference", breaks = c("Eurostat 13-06-2025","Eurostat 17-07-2025","Eurostat 18-08-2025","Eurostat 15-09-2025","Eurostat 20-10-2025","Eurostat 17-11-2025","Eurostat 06-01-2026","Eurostat 16-01-2026")) +
+      scale_fill_discrete(name = "Data difference", breaks = c("Eurostat 20-10-2025","Eurostat 17-11-2025","Eurostat 06-01-2026","Eurostat 16-01-2026","Eurostat 18-02-2026")) +
       ylab("EU imports from the UK (€)") +
       scale_y_continuous(labels = scales::label_comma()), tooltip = c("text")
   )
@@ -715,13 +715,13 @@ body <- dashboardBody(
                 h5(strong("4)"), "Select the tab for the aggregation level of interest (HS4, HS6 or CN8)."),
                 
                 h5(strong("Limitations & caveats")),
-                h5("Currently, the tool contains EU import from UK data for the period of",strong(em("2022,2023,2024 and Jan-Nov 2025."))),
+                h5("Currently, the tool contains EU import from UK data for the period of",strong(em("2022-2025."))),
                 h5("This tool includes data for agrifood products (HS Chapters 1-24) only."),
-                h5("The data is subject to revision by Eurostat. The current version is based on PUR data as at 16/01/2026."),
+                h5("The data is subject to revision by Eurostat. The current version is based on PUR data as at 18/02/2026."),
                 br(),
                 
                 h5("App built by: Louise Anokye, October 2023"),
-                h5("Quality Assured: Katie Earl, Jan 2026"),
+                h5("Quality Assured: Katie Earl, Feb 2026"),
                 
                 h5(strong(em("If you have any questions or queries, contact Louise Anokye (louise.anokye@defra.gov.uk), Katie Earl (katie.earl@defra.gov.uk) 
              "))))
@@ -2043,13 +2043,13 @@ server <- function(input, output, session){
     data_HS4 <- HS4_data()
     
     data_HS4$Pref_Trade <- format(data_HS4$Pref_Trade, 
-                                  big.mark = ",", big.interval = 3)
+                                  big.mark = ",", big.interval = 3, scientific = FALSE)
     
     data_HS4$Eligible_Trade <- format(data_HS4$Eligible_Trade, 
-                                      big.mark = ",", big.interval = 3)
+                                      big.mark = ",", big.interval = 3, scientific = FALSE)
     
     data_HS4$Total_ex <- format(data_HS4$Total_ex, 
-                                big.mark = ",", big.interval = 3)
+                                big.mark = ",", big.interval = 3, scientific = FALSE)
     
     names(data_HS4)[names(data_HS4) == "country_name"] <- "Country Name"
     names(data_HS4)[names(data_HS4) == "HS4_desc"] <- "HS4 Description"
@@ -2125,13 +2125,13 @@ server <- function(input, output, session){
     data_HS6 <- HS6_data()
     
     data_HS6$Pref_Trade <- format(data_HS6$Pref_Trade, 
-                                  big.mark = ",", big.interval = 3)
+                                  big.mark = ",", big.interval = 3, scientific = FALSE)
     
     data_HS6$Eligible_Trade <- format(data_HS6$Eligible_Trade, 
-                                      big.mark = ",", big.interval = 3)
+                                      big.mark = ",", big.interval = 3, scientific = FALSE)
     
     data_HS6$Total_ex <- format(data_HS6$Total_ex, 
-                                big.mark = ",", big.interval = 3)
+                                big.mark = ",", big.interval = 3, scientific = FALSE)
     
     names(data_HS6)[names(data_HS6) == "country_name"] <- "Country Name"
     names(data_HS6)[names(data_HS6) == "HS6_desc"] <- "HS6 Description"
@@ -2201,13 +2201,13 @@ server <- function(input, output, session){
     data_CN8 <- CN8_data()
     
     data_CN8$Pref_Trade <- format(data_CN8$Pref_Trade, 
-                                  big.mark = ",", big.interval = 3)
+                                  big.mark = ",", big.interval = 3, scientific = FALSE)
     
     data_CN8$Eligible_Trade <- format(data_CN8$Eligible_Trade, 
-                                      big.mark = ",", big.interval = 3)
+                                      big.mark = ",", big.interval = 3, scientific = FALSE)
     
     data_CN8$Total_ex <- format(data_CN8$Total_ex, 
-                                big.mark = ",", big.interval = 3)
+                                big.mark = ",", big.interval = 3, scientific = FALSE)
     
     names(data_CN8)[names(data_CN8) == "country_name"] <- "Country Name"
     names(data_CN8)[names(data_CN8) == "Pref_Trade"] <- "Preferential Imports € "

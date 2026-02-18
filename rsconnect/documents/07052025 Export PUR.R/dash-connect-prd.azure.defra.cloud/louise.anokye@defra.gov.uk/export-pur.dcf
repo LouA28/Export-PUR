@@ -5,7 +5,7 @@ account: louise.anokye@defra.gov.uk
 server: dash-connect-prd.azure.defra.cloud
 hostUrl: https://dash-connect-prd.azure.defra.cloud/__api__
 appId: 95
-bundleId: 1244
+bundleId: 1767
 url: https://dash-connect-prd.azure.defra.cloud/eupur/
 version: 1
 asMultiple: FALSE
