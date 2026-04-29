@@ -128,7 +128,7 @@ country <- data.frame(country_choice)
 
 ############################################################
 
-New_data_exports$date_stamp <- c("Eurostat 18-02-2026")
+New_data_exports$date_stamp <- c("Eurostat 29-04-2026")
 
 ## combine the two datasets (old and new)
 
@@ -145,7 +145,7 @@ data_diff_exports$Date <- as.factor(data_diff_exports$Date)
 # # Reverse order of levels of Date variable
 
 data_diff_exports$date_stamp <- factor(data_diff_exports$date_stamp, 
-                                       levels = c("Eurostat 20-10-2025","Eurostat 17-11-2025","Eurostat 06-01-2026","Eurostat 16-01-2026","Eurostat 18-02-2026")) 
+                                       levels = c("Eurostat 20-10-2025","Eurostat 17-11-2025","Eurostat 06-01-2026","Eurostat 16-01-2026","Eurostat 18-02-2026","Eurostat 29-04-2026")) 
 
 #data_diff_exports$date_stamp <- factor(data_diff_exports$date_stamp, levels = rev(levels(data_diff_exports$date_stamp)))
 
@@ -715,13 +715,13 @@ body <- dashboardBody(
                 h5(strong("4)"), "Select the tab for the aggregation level of interest (HS4, HS6 or CN8)."),
                 
                 h5(strong("Limitations & caveats")),
-                h5("Currently, the tool contains EU import from UK data for the period of",strong(em("2022-2025."))),
+                h5("Currently, the tool contains EU import from UK data for the period of",strong(em("2022-2025, Jan-Feb 2026."))),
                 h5("This tool includes data for agrifood products (HS Chapters 1-24) only."),
-                h5("The data is subject to revision by Eurostat. The current version is based on PUR data as at 18/02/2026."),
+                h5("The data is subject to revision by Eurostat. The current version is based on PUR data as at 30/04/2026."),
                 br(),
                 
                 h5("App built by: Louise Anokye, October 2023"),
-                h5("Quality Assured: Katie Earl, Feb 2026"),
+                h5("Quality Assured: Katie Earl, April 2026"),
                 
                 h5(strong(em("If you have any questions or queries, contact Louise Anokye (louise.anokye@defra.gov.uk), Katie Earl (katie.earl@defra.gov.uk) 
              "))))
@@ -750,7 +750,7 @@ body <- dashboardBody(
                              
                              selectInput(inputId = "year",
                                          label = "Please select a year",
-                                         choices = c("2022", "2023", "2024","2025"), selected = "2022"),
+                                         choices = c("2022", "2023", "2024","2025","2026"), selected = "2022"),
                              
                              ## HS2 dropdown only appears if you select the tabs that need it
                              conditionalPanel(
@@ -781,7 +781,7 @@ body <- dashboardBody(
     
     tabItem(tabName = "map", #KE added 0905
             box(title = "Map", status='primary', solidHeader=TRUE, width="100%", height="100%",
-                sliderInput("yearmap", "Select a year", min = 2022, max= 2025, value = 2023, sep = ""),
+                sliderInput("yearmap", "Select a year", min = 2022, max= 2026, value = 2023, sep = ""),
                 h5("The map below presents a summary of the EU's utilisation of AGRI preferences on importing from the UK for the chosen year. For more information, use the app tabs. "),
                 column(width = 12,
                        
@@ -1779,32 +1779,32 @@ server <- function(input, output, session){
     
     if(input$agriproduct == "Total Agri"){
       
-      paste0("Agrifood timeseries, 2022-25 ")
+      paste0("Agrifood timeseries, 2022-26 ")
       
     }else{
       
       if(input$HSFFD == "HS" && input$MoreHS2 == "No"){
         
-        paste0("Time series for: ", input$Hs2chosen, ", 2022-25") 
+        paste0("Time series for: ", input$Hs2chosen, ", 2022-26") 
         
       }else if(input$MoreHS2 == "Yes" && input$MoreHS4 == "No"){
         
-        paste0("Time series for: ", input$Hs4chosen, ", 2022-25")
+        paste0("Time series for: ", input$Hs4chosen, ", 2022-26")
         
       }else if(input$MoreHS4 == "Yes"){
         
-        paste0("Time series for: ", input$Hs6chosen, ", 2022-25")
+        paste0("Time series for: ", input$Hs6chosen, ", 2022-26")
         
       }else{
         
         
         if(input$HSFFD == "SITC" && input$MoreSITC == "No"){
           
-          paste0("Time series for: ", input$SITCchosen, ", 2022-25")
+          paste0("Time series for: ", input$SITCchosen, ", 2022-26")
           
         }else if(input$MoreSITC == "Yes"){
           
-          paste0("Time series for: ", input$FFDchosen, ", 2022-25")
+          paste0("Time series for: ", input$FFDchosen, ", 2022-26")
         }else{
           
         }
@@ -1850,6 +1850,7 @@ server <- function(input, output, session){
       `2023` = formatter("span", x ~ paste0(format(x, digits = 3, trim = TRUE), "%")),
       `2024` = formatter("span", x ~ paste0(format(x, digits = 3, trim = TRUE), "%")),
       `2025` = formatter("span", x ~ paste0(format(x, digits = 3, trim = TRUE), "%")),
+      `2026` = formatter("span", x ~ paste0(format(x, digits = 3, trim = TRUE), "%")),
       `HS section` = formatter("span", 
                                style = ~ style(font.weight = ifelse(Agri_breakdown$`HS section` == "Agri", "bold", "normal")))
     ))
